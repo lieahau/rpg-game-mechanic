@@ -18,6 +18,18 @@ export class Player extends Component {
       agility: 5,
       intelligence: 8,
     });
+
+    director.on(GameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
+    director.on(GameEvents.PLAYER_HEAL, this.heal, this);
+    director.on(GameEvents.PLAYER_USE_MANA, this.useMana, this);
+    director.on(GameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
+  }
+
+  onDestroy() {
+    director.off(GameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
+    director.off(GameEvents.PLAYER_HEAL, this.heal, this);
+    director.off(GameEvents.PLAYER_USE_MANA, this.useMana, this);
+    director.off(GameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
   }
 
   start() {
