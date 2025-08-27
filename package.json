@@ -3,5 +3,18 @@
   "uuid": "e82e8d40-df0a-420a-a99b-0e5c4a2650aa",
   "creator": {
     "version": "3.8.6"
+  },
+  "scripts": {
+    "lint": "eslint --ext .ts,.js assets",
+    "lint:fix": "eslint --ext .ts,.js assets --fix",
+    "format": "prettier --write \"assets/**/*.{ts,js,json,css,scss,md}\""
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^9.34.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
   }
 }
