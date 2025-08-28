@@ -20,7 +20,7 @@ export class EquipmentSystem {
 
     const previous = this.slots.get(item.slot);
 
-    if (previous?.id === item.id) return { previous: null, new: null };
+    if (previous === item) return { previous: null, new: null };
 
     this.slots.set(item.slot, item);
 
