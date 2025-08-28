@@ -1,8 +1,9 @@
 import { _decorator, Component, Node } from 'cc';
-import { IStats } from '../models/types/interfaces';
+import { IPlayerData } from '../models/types/interfaces';
 import { DataLoader } from './dataLoader';
 import { PlayerFactory } from '../factories/playerFactory';
 import { FILENAME } from '../types/enums';
+
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -18,7 +19,7 @@ export class GameManager extends Component {
     if (!this.gameplayRoot) return;
 
     try {
-      const playerData = await DataLoader.instance.loadJson<IStats>(FILENAME.JSON_PLAYER_DATA);
+      const playerData = await DataLoader.instance.loadJson<IPlayerData>(FILENAME.JSON_PLAYER_DATA);
       const playerNode = await PlayerFactory.instance.create(playerData);
 
       this.gameplayRoot.addChild(playerNode);

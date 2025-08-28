@@ -1,28 +1,36 @@
 import { BaseStats } from './baseStats';
-import { IStatsModifier, IStats } from './types/interfaces';
+import { IStats } from './types/interfaces';
 
 export class PlayerStats {
   private baseStats: BaseStats;
-  private modifiers: IStatsModifier[] = [];
+  private modifiers: Partial<IStats>[] = [];
 
   constructor(initialStats: Partial<IStats>) {
     this.baseStats = new BaseStats(initialStats);
   }
 
-  addModifier(modifier: IStatsModifier) {
+  addModifier(modifier: Partial<IStats>) {
     this.modifiers.push(modifier);
   }
 
-  removeModifier(modifier: IStatsModifier) {
+  removeModifier(modifier: Partial<IStats>) {
     this.modifiers = this.modifiers.filter((m) => m !== modifier);
   }
 
   getStats(): IStats {
     // base stats + all modifiers applied
-    return this.modifiers.reduce(
-      (current, modifier) => modifier.apply(current),
-      this.baseStats.clone()
-    );
+    return this.modifiers.reduce((accumulator: IStats, modifier) => {
+      Object.keys(modifier).forEach((key) => {
+        if (key === 'health') {
+          accumulator[key] = Math.min(accumulator[key] + modifier[key], accumulator.maxHealth);
+        } else if (key === 'mana') {
+          accumulator[key] = Math.min(accumulator[key] + modifier[key], accumulator.maxMana);
+        } else if (key in accumulator) {
+          accumulator[key] += modifier[key];
+        }
+      });
+      return accumulator;
+    }, this.baseStats.clone()) as IStats;
   }
 
   takeDamage(amount: number) {

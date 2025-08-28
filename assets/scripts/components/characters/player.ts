@@ -1,13 +1,15 @@
 import { _decorator, Component, director } from 'cc';
-import { PlayerStats } from '../../models/playerStats';
 import { GameEvents } from '../../types/gameEvents';
-import { IStats } from '../../models/types/interfaces';
+import { IPlayerData } from '../../models/types/interfaces';
+import { PlayerController } from '../../controllers/playerController';
+import { Equipment } from '../../models/equipment';
+import { EquipmentType } from '../../models/types/enums';
 
 const { ccclass } = _decorator;
 
 @ccclass('Player')
 export class Player extends Component {
-  private stats: PlayerStats;
+  private controller: PlayerController;
 
   onLoad() {
     director.on(GameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
@@ -23,45 +25,58 @@ export class Player extends Component {
     director.off(GameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
   }
 
-  init(stats: IStats) {
-    this.stats = new PlayerStats({
-      health: stats.health,
-      maxHealth: stats.maxHealth,
-      mana: stats.mana,
-      maxMana: stats.maxMana,
-      strength: stats.strength,
-      agility: stats.agility,
-      intelligence: stats.intelligence,
-    });
+  init(data: IPlayerData) {
+    this.controller = new PlayerController(data);
 
-    this.notifyChange();
+    this.notifyEquipmentChanged();
+    this.notifyStatsChanged();
   }
 
   getStats() {
-    return this.stats.getStats();
+    return this.controller.getStats();
   }
 
   takeDamage(amount: number) {
-    this.stats.takeDamage(amount);
-    this.notifyChange();
+    this.controller.takeDamage(amount);
+    this.notifyStatsChanged();
   }
 
   heal(amount: number) {
-    this.stats.heal(amount);
-    this.notifyChange();
+    this.controller.heal(amount);
+    this.notifyStatsChanged();
   }
 
   useMana(amount: number) {
-    this.stats.useMana(amount);
-    this.notifyChange();
+    this.controller.useMana(amount);
+    this.notifyStatsChanged();
   }
 
   restoreMana(amount: number) {
-    this.stats.restoreMana(amount);
-    this.notifyChange();
+    this.controller.restoreMana(amount);
+    this.notifyStatsChanged();
   }
 
-  private notifyChange() {
-    director.emit(GameEvents.PLAYER_STATS_CHANGED, this.stats.getStats());
+  equip(equipment: Equipment) {
+    const equipChanged = this.controller.equip(equipment);
+    if (equipChanged.new) {
+      this.notifyEquipmentChanged(equipChanged.previous, equipChanged.new);
+      this.notifyStatsChanged();
+    }
+  }
+
+  unequip(slot: EquipmentType) {
+    const previousEquipment = this.controller.unequip(slot);
+    if (previousEquipment) {
+      this.notifyEquipmentChanged(previousEquipment);
+      this.notifyStatsChanged();
+    }
+  }
+
+  private notifyStatsChanged() {
+    director.emit(GameEvents.PLAYER_STATS_CHANGED, this.controller.getStats());
+  }
+
+  private notifyEquipmentChanged(...args: Equipment[]) {
+    director.emit(GameEvents.PLAYER_EQUIPMENT_CHANGED, this.controller.getAllEquipped(), ...args);
   }
 }

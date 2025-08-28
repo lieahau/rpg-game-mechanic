@@ -1,6 +1,6 @@
 import { Node, Prefab, instantiate } from 'cc';
 import { Player } from '../components/characters/player';
-import { IStats } from '../models/types/interfaces';
+import { IPlayerData } from '../models/types/interfaces';
 import { DataLoader } from '../managers/dataLoader';
 import { IEntityFactory } from '../types/interfaces';
 import { FILENAME } from '../types/enums';
@@ -17,7 +17,7 @@ export class PlayerFactory implements IEntityFactory<Node> {
     return this._instance;
   }
 
-  async create(data: IStats): Promise<Node> {
+  async create(data: IPlayerData): Promise<Node> {
     try {
       if (!this.prefab) {
         this.prefab = await DataLoader.instance.loadPrefab(FILENAME.PREFAB_PLAYER);

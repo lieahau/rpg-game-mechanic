@@ -186,9 +186,9 @@
     "_far": 2000,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_depth": 1,
@@ -2458,7 +2458,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Player Stats Reducer UI",
+    "_name": "Interaction UI",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -3459,9 +3459,6 @@
     "__prefab": null,
     "gameplayRoot": {
       "__id__": 5
-    },
-    "uiRoot": {
-      "__id__": 8
     },
     "_id": "08mWmh9MVO+ZOvPsmL/Sp5"
   },

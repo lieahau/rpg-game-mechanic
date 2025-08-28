@@ -1,3 +1,5 @@
+import { EquipmentType } from './enums';
+
 export interface IStats {
   health: number;
   maxHealth: number;
@@ -8,6 +10,17 @@ export interface IStats {
   intelligence: number;
 }
 
-export interface IStatsModifier {
-  apply(stats: IStats): IStats;
+export interface IEquipment {
+  id: number;
+  name: string;
+  desc: string;
+  slot: EquipmentType;
+  stats: Partial<IStats>;
+}
+
+export interface IPlayerData {
+  stats: Partial<IStats>;
+  equipments: {
+    [key in EquipmentType]?: IEquipment;
+  };
 }

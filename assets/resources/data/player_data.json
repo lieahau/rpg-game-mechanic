@@ -1,9 +1,24 @@
 {
-  "health": 200,
-  "maxHealth": 200,
-  "mana": 100,
-  "maxMana": 100,
-  "strength": 15,
-  "agility": 5,
-  "intelligence": 8
+  "stats": {
+    "health": 150,
+    "maxHealth": 150,
+    "mana": 75,
+    "maxMana": 75,
+    "strength": 10,
+    "agility": 7,
+    "intelligence": 5
+  },
+  "equipments": {
+    "helmet": {
+      "id": 1,
+      "name": "Iron Helmet",
+      "desc": "A sturdy iron helmet.",
+      "slot": "helmet",
+      "stats": {
+        "strength": 7
+      }
+    },
+    "armor": null,
+    "boots": null
+  }
 }
