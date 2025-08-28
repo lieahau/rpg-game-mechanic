@@ -1,0 +1,9 @@
+{
+  "health": 200,
+  "maxHealth": 200,
+  "mana": 100,
+  "maxMana": 100,
+  "strength": 15,
+  "agilty": 5,
+  "intelligence": 8
+}

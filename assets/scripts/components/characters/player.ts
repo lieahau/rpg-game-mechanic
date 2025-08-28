@@ -1,6 +1,7 @@
 import { _decorator, Component, director } from 'cc';
 import { PlayerStats } from '../../models/playerStats';
 import { GameEvents } from '../../types/gameEvents';
+import { IStats } from '../../models/types/interfaces';
 
 const { ccclass } = _decorator;
 
@@ -9,16 +10,6 @@ export class Player extends Component {
   private stats: PlayerStats;
 
   onLoad() {
-    this.stats = new PlayerStats({
-      health: 100,
-      maxHealth: 100,
-      mana: 50,
-      maxMana: 50,
-      strength: 10,
-      agility: 5,
-      intelligence: 8,
-    });
-
     director.on(GameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
     director.on(GameEvents.PLAYER_HEAL, this.heal, this);
     director.on(GameEvents.PLAYER_USE_MANA, this.useMana, this);
@@ -32,7 +23,17 @@ export class Player extends Component {
     director.off(GameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
   }
 
-  start() {
+  init(stats: IStats) {
+    this.stats = new PlayerStats({
+      health: stats.health,
+      maxHealth: stats.maxHealth,
+      mana: stats.mana,
+      maxMana: stats.maxMana,
+      strength: stats.strength,
+      agility: stats.agility,
+      intelligence: stats.intelligence,
+    });
+
     this.notifyChange();
   }
 
