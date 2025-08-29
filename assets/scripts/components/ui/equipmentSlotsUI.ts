@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTarget, Node } from 'cc';
+import { _decorator, Button, Component, EventTarget, Node } from 'cc';
 import { PlayerGameEvents } from '../../types/gameEvents';
 import { EquipmentType } from '../../models/types/enums';
 import { Equipment } from '../../models/equipment';
@@ -6,25 +6,41 @@ import { EquipmentUI } from './equipmentUI';
 import { EquipmentUIFactory } from '../../factories/equipmentUIFactory';
 const { ccclass, property } = _decorator;
 
+@ccclass('EquipmentSlotUI')
+class EquipmentSlotUI {
+  @property(Node)
+  slot?: Node;
+
+  ui?: EquipmentUI;
+
+  @property(Button)
+  unequipButton?: Button;
+}
+
 @ccclass('EquipmentSlotsUI')
 export class EquipmentSlotsUI extends Component {
-  @property(Node)
-  private helmetSlot?: Node;
+  @property(EquipmentSlotUI)
+  private helmet: EquipmentSlotUI = new EquipmentSlotUI();
 
-  @property(Node)
-  private armorSlot?: Node;
+  @property(EquipmentSlotUI)
+  private armor: EquipmentSlotUI = new EquipmentSlotUI();
 
-  @property(Node)
-  private bootSlot?: Node;
-
-  private helmetUI?: EquipmentUI;
-  private armorUI?: EquipmentUI;
-  private bootUI?: EquipmentUI;
+  @property(EquipmentSlotUI)
+  private boots?: EquipmentSlotUI = new EquipmentSlotUI();
 
   private playerEventTarget?: EventTarget;
 
+  onLoad() {
+    this.helmet.unequipButton?.node.on(Button.EventType.CLICK, this.onClickUnequipHelmet, this);
+    this.armor.unequipButton?.node.on(Button.EventType.CLICK, this.onClickUnequipArmor, this);
+    this.boots.unequipButton?.node.on(Button.EventType.CLICK, this.onClickUnequipBoots, this);
+  }
+
   onDestroy() {
     this.setPlayerEventListenersOff();
+    this.helmet.unequipButton?.node.off(Button.EventType.CLICK, this.onClickUnequipHelmet, this);
+    this.armor.unequipButton?.node.off(Button.EventType.CLICK, this.onClickUnequipArmor, this);
+    this.boots.unequipButton?.node.off(Button.EventType.CLICK, this.onClickUnequipBoots, this);
   }
 
   setPlayerEventTarget(eventTarget: EventTarget) {
@@ -49,24 +65,61 @@ export class EquipmentSlotsUI extends Component {
     );
   }
 
-  private onPlayerEquipmentChanged(dataMap: Map<EquipmentType, Equipment>) {
+  private onClickUnequipHelmet() {
+    this.playerEventTarget?.emit(
+      PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
+      EquipmentType.HELMET
+    );
+  }
+
+  private onClickUnequipArmor() {
+    this.playerEventTarget?.emit(
+      PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
+      EquipmentType.ARMOR
+    );
+  }
+
+  private onClickUnequipBoots() {
+    this.playerEventTarget?.emit(
+      PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
+      EquipmentType.BOOTS
+    );
+  }
+
+  private async onPlayerEquipmentChanged(dataMap: Map<EquipmentType, Equipment>) {
     try {
-      dataMap.forEach(async (equipment, type) => {
+      await this.updateSlotsUI(dataMap);
+      this.updateUnequipButtonStates();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to change equipment slots UI: ', error);
+    }
+  }
+
+  private updateUnequipButtonStates() {
+    if (this.helmet.unequipButton) this.helmet.unequipButton.interactable = !!this.helmet.ui;
+    if (this.armor.unequipButton) this.armor.unequipButton.interactable = !!this.armor.ui;
+    if (this.boots.unequipButton) this.boots.unequipButton.interactable = !!this.boots.ui;
+  }
+
+  private async updateSlotsUI(dataMap: Map<EquipmentType, Equipment>) {
+    try {
+      for (const [type, equipment] of dataMap) {
         let slotNode: Node | undefined;
         let currentUIRef: EquipmentUI | undefined;
 
         switch (type) {
           case EquipmentType.HELMET:
-            slotNode = this.helmetSlot;
-            currentUIRef = this.helmetUI;
+            slotNode = this.helmet.slot;
+            currentUIRef = this.helmet.ui;
             break;
           case EquipmentType.ARMOR:
-            slotNode = this.armorSlot;
-            currentUIRef = this.armorUI;
+            slotNode = this.armor.slot;
+            currentUIRef = this.armor.ui;
             break;
           case EquipmentType.BOOTS:
-            slotNode = this.bootSlot;
-            currentUIRef = this.bootUI;
+            slotNode = this.boots.slot;
+            currentUIRef = this.boots.ui;
             break;
         }
 
@@ -91,19 +144,18 @@ export class EquipmentSlotsUI extends Component {
         // Save reference
         switch (type) {
           case EquipmentType.HELMET:
-            this.helmetUI = equipmentUI;
+            this.helmet.ui = equipmentUI;
             break;
           case EquipmentType.ARMOR:
-            this.armorUI = equipmentUI;
+            this.armor.ui = equipmentUI;
             break;
           case EquipmentType.BOOTS:
-            this.bootUI = equipmentUI;
+            this.boots.ui = equipmentUI;
             break;
         }
-      });
+      }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to change equipment slots UI: ', error);
+      throw new Error(error);
     }
   }
 }

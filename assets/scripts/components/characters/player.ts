@@ -17,6 +17,7 @@ export class Player extends Component {
     this.eventTarget.on(PlayerGameEvents.PLAYER_HEAL, this.heal, this);
     this.eventTarget.on(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
     this.eventTarget.on(PlayerGameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING, this.unequip, this);
   }
 
   onDestroy() {
@@ -24,6 +25,7 @@ export class Player extends Component {
     this.eventTarget.off(PlayerGameEvents.PLAYER_HEAL, this.heal, this);
     this.eventTarget.off(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
     this.eventTarget.off(PlayerGameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING, this.unequip, this);
   }
 
   init(data: IPlayerData) {
