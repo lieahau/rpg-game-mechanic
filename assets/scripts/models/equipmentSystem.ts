@@ -1,10 +1,17 @@
 import { Equipment } from './equipment';
 import { EquipmentType } from './types/enums';
 
-export interface IEquipChange {
+export interface IEquipChangeSuccess {
   previous: Equipment | null;
-  new: Equipment | null;
+  new: Equipment;
 }
+
+export interface IEquipChangeFail {
+  previous: null;
+  new: null;
+}
+
+export type IEquipChange = IEquipChangeSuccess | IEquipChangeFail;
 
 export class EquipmentSystem {
   private slots: Map<EquipmentType, Equipment | null> = new Map();

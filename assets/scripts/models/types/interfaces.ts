@@ -18,9 +18,11 @@ export interface IEquipment {
   stats: Partial<IStats>;
 }
 
+export type IEquipmentSlots = {
+  [key in EquipmentType]?: IEquipment;
+};
+
 export interface IPlayerData {
   stats: Partial<IStats>;
-  equipments: {
-    [key in EquipmentType]?: IEquipment;
-  };
+  equipments: IEquipmentSlots;
 }

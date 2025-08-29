@@ -14,15 +14,16 @@ export class PlayerController {
     this.equipmentSystem = new EquipmentSystem();
 
     // convert IEquipment (if exist) to Equipment models and equip them
-    const equipmentsData = Object.values(data.equipments).filter((e) =>
-      Object.values(EquipmentType).includes(e?.slot)
-    );
-    const equipments = EquipmentModelFactory.instance.createMany(equipmentsData);
+    const equipments = EquipmentModelFactory.instance.createFromMap(data.equipments);
     equipments.forEach((equipment) => this.equip(equipment));
   }
 
   getStats() {
     return this.stats.getStats();
+  }
+
+  getEquipped(slot: EquipmentType) {
+    return this.equipmentSystem.getEquipped(slot);
   }
 
   getAllEquipped() {

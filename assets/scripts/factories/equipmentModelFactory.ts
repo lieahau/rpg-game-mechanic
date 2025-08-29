@@ -1,5 +1,6 @@
 import { Equipment } from '../models/equipment';
-import { IEquipment } from '../models/types/interfaces';
+import { EquipmentType } from '../models/types/enums';
+import { IEquipment, IEquipmentSlots } from '../models/types/interfaces';
 import { IEntityFactory } from '../types/interfaces';
 
 export class EquipmentModelFactory implements IEntityFactory<Equipment> {
@@ -16,7 +17,9 @@ export class EquipmentModelFactory implements IEntityFactory<Equipment> {
     return new Equipment(data);
   }
 
-  createMany(dataArray: IEquipment[]): Equipment[] {
-    return dataArray.map((data) => new Equipment(data));
+  createFromMap(dataMap: IEquipmentSlots): Equipment[] {
+    return Object.values(dataMap)
+      .filter((data) => Object.values(EquipmentType).includes(data?.slot))
+      .map((data) => new Equipment(data));
   }
 }
