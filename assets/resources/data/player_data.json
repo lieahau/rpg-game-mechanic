@@ -16,7 +16,8 @@
       "slot": "helmet",
       "stats": {
         "strength": 7
-      }
+      },
+      "iconUrl": "images/iron_helmet"
     },
     "armor": null,
     "boots": null

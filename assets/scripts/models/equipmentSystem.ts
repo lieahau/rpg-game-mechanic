@@ -23,8 +23,6 @@ export class EquipmentSystem {
   }
 
   equip(item: Equipment): IEquipChange {
-    if (!this.slots.has(item.slot)) return { previous: null, new: null };
-
     const previous = this.slots.get(item.slot);
 
     if (previous === item) return { previous: null, new: null };

@@ -7,6 +7,7 @@ export class Equipment implements IEquipment {
   readonly slot: EquipmentType;
   readonly desc: string;
   readonly stats: Partial<IStats>;
+  readonly iconUrl: string;
 
   constructor(data: IEquipment) {
     this.id = data.id;
@@ -14,5 +15,6 @@ export class Equipment implements IEquipment {
     this.slot = data.slot;
     this.desc = data.desc;
     this.stats = data.stats;
+    this.iconUrl = data.iconUrl;
   }
 }

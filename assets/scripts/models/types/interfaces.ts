@@ -16,6 +16,7 @@ export interface IEquipment {
   desc: string;
   slot: EquipmentType;
   stats: Partial<IStats>;
+  iconUrl: string;
 }
 
 export type IEquipmentSlots = {

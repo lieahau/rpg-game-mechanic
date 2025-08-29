@@ -1,8 +1,12 @@
-import { resources, JsonAsset, Prefab, assetManager, AssetManager } from 'cc';
+import { resources, JsonAsset, Prefab, assetManager, AssetManager, SpriteFrame } from 'cc';
 import { BUNDLENAME } from '../types/enums';
 
 export class DataLoader {
   private prefabBundle: AssetManager.Bundle;
+
+  private prefabCache: Map<string, Prefab> = new Map();
+
+  private spriteFrameCache: Map<string, SpriteFrame> = new Map();
 
   private static _instance: DataLoader;
 
@@ -38,6 +42,10 @@ export class DataLoader {
   }
 
   async loadPrefab(fileName: string): Promise<Prefab> {
+    if (this.prefabCache.has(fileName)) {
+      return this.prefabCache.get(fileName);
+    }
+
     try {
       if (!this.prefabBundle) {
         this.prefabBundle = await this.loadBundle(BUNDLENAME.PREFABS);
@@ -51,8 +59,27 @@ export class DataLoader {
         if (err) {
           reject(err);
         } else {
+          this.prefabCache.set(fileName, prefab);
           resolve(prefab);
         }
+      });
+    });
+  }
+
+  async loadSpriteFrame(path: string): Promise<SpriteFrame> {
+    if (this.spriteFrameCache.has(path)) {
+      return this.spriteFrameCache.get(path);
+    }
+
+    return new Promise<SpriteFrame>((resolve, reject) => {
+      resources.load(`${path}/spriteFrame`, SpriteFrame, (err, spriteFrame) => {
+        if (err || !spriteFrame) {
+          reject(err);
+          return;
+        }
+
+        this.spriteFrameCache.set(path, spriteFrame);
+        resolve(spriteFrame);
       });
     });
   }
