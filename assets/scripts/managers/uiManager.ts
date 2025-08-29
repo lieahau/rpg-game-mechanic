@@ -6,8 +6,8 @@ import { SpellButton } from '../components/ui/spellButton';
 import { DamageButton } from '../components/ui/damageButton';
 const { ccclass, property } = _decorator;
 
-@ccclass('uiManager')
-export class uiManager extends Component {
+@ccclass('UIManagers')
+export class UIManagers extends Component {
   @property(PlayerStatsHUD)
   private playerStatsHUD?: PlayerStatsHUD;
 
