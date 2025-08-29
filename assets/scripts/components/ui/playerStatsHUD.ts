@@ -1,5 +1,5 @@
-import { _decorator, Component, director, Label } from 'cc';
-import { GameEvents } from '../../types/gameEvents';
+import { _decorator, Component, EventTarget, Label } from 'cc';
+import { PlayerGameEvents } from '../../types/gameEvents';
 import { IStats } from '../../models/types/interfaces';
 const { ccclass, property } = _decorator;
 
@@ -20,12 +20,24 @@ export class PlayerStatsHUD extends Component {
   @property(Label)
   private intelligenceLabel?: Label;
 
-  onLoad() {
-    director.on(GameEvents.PLAYER_STATS_CHANGED, this.updateHUD, this);
-  }
+  private playerEventTarget?: EventTarget;
 
   onDestroy() {
-    director.off(GameEvents.PLAYER_STATS_CHANGED, this.updateHUD, this);
+    this.setPlayerEventListenersOff();
+  }
+
+  setPlayerEventTarget(eventTarget: EventTarget) {
+    this.setPlayerEventListenersOff();
+    this.playerEventTarget = eventTarget;
+    this.setPlayerEventListenersOn();
+  }
+
+  private setPlayerEventListenersOn() {
+    this.playerEventTarget?.on(PlayerGameEvents.PLAYER_STATS_CHANGED, this.updateHUD, this);
+  }
+
+  private setPlayerEventListenersOff() {
+    this.playerEventTarget?.off(PlayerGameEvents.PLAYER_STATS_CHANGED, this.updateHUD, this);
   }
 
   private updateHUD(stats: IStats) {

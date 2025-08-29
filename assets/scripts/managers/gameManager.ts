@@ -1,8 +1,9 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, director, Node } from 'cc';
 import { IPlayerData } from '../models/types/interfaces';
 import { DataLoader } from './dataLoader';
 import { PlayerFactory } from '../factories/playerFactory';
 import { FILENAME } from '../types/enums';
+import { GlobalGameEvents } from '../types/gameEvents';
 
 const { ccclass, property } = _decorator;
 
@@ -23,6 +24,7 @@ export class GameManager extends Component {
       const playerNode = await PlayerFactory.instance.create(playerData);
 
       this.gameplayRoot.addChild(playerNode);
+      director.emit(GlobalGameEvents.PLAYER_READY, playerNode);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to load spawn player: ', error);

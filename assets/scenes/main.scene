@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 89
+      "__id__": 90
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 90
+      "__id__": 91
     },
     "_id": "7648fef0-1f2c-4b91-ba92-5f81df62c441"
   },
@@ -3415,6 +3415,9 @@
     "_components": [
       {
         "__id__": 88
+      },
+      {
+        "__id__": 89
       }
     ],
     "_prefab": null,
@@ -3463,6 +3466,27 @@
     "_id": "08mWmh9MVO+ZOvPsmL/Sp5"
   },
   {
+    "__type__": "b59eaDQ4JFFLo+EBPUFqIO2",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 87
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "playerStatsHUD": {
+      "__id__": 59
+    },
+    "damageButton": {
+      "__id__": 69
+    },
+    "spellButton": {
+      "__id__": 78
+    },
+    "_id": "5ejjmD4E5Hw5q++ob6y6Gf"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": null,
     "asset": null,
@@ -3473,28 +3497,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 91
-    },
-    "shadows": {
       "__id__": 92
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 93
     },
-    "fog": {
+    "_skybox": {
       "__id__": 94
     },
-    "octree": {
+    "fog": {
       "__id__": 95
     },
-    "skin": {
+    "octree": {
       "__id__": 96
     },
-    "lightProbeInfo": {
+    "skin": {
       "__id__": 97
     },
-    "postSettings": {
+    "lightProbeInfo": {
       "__id__": 98
+    },
+    "postSettings": {
+      "__id__": 99
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

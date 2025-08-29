@@ -1,35 +1,42 @@
-import { _decorator, Component, director } from 'cc';
-import { GameEvents } from '../../types/gameEvents';
+import { _decorator, Component, EventTarget } from 'cc';
 import { IPlayerData } from '../../models/types/interfaces';
 import { PlayerController } from '../../controllers/playerController';
 import { Equipment } from '../../models/equipment';
 import { EquipmentType } from '../../models/types/enums';
+import { PlayerGameEvents } from '../../types/gameEvents';
 
 const { ccclass } = _decorator;
 
 @ccclass('Player')
 export class Player extends Component {
   private controller: PlayerController;
+  private eventTarget: EventTarget = new EventTarget();
 
   onLoad() {
-    director.on(GameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
-    director.on(GameEvents.PLAYER_HEAL, this.heal, this);
-    director.on(GameEvents.PLAYER_USE_MANA, this.useMana, this);
-    director.on(GameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_HEAL, this.heal, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
   }
 
   onDestroy() {
-    director.off(GameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
-    director.off(GameEvents.PLAYER_HEAL, this.heal, this);
-    director.off(GameEvents.PLAYER_USE_MANA, this.useMana, this);
-    director.off(GameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_HEAL, this.heal, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
   }
 
   init(data: IPlayerData) {
     this.controller = new PlayerController(data);
+  }
 
-    this.notifyEquipmentChanged();
+  start() {
     this.notifyStatsChanged();
+    this.notifyEquipmentChanged();
+  }
+
+  getEventTarget(): EventTarget {
+    return this.eventTarget;
   }
 
   getStats() {
@@ -73,10 +80,14 @@ export class Player extends Component {
   }
 
   private notifyStatsChanged() {
-    director.emit(GameEvents.PLAYER_STATS_CHANGED, this.controller.getStats());
+    this.eventTarget.emit(PlayerGameEvents.PLAYER_STATS_CHANGED, this.controller.getStats());
   }
 
   private notifyEquipmentChanged(...args: Equipment[]) {
-    director.emit(GameEvents.PLAYER_EQUIPMENT_CHANGED, this.controller.getAllEquipped(), ...args);
+    this.eventTarget.emit(
+      PlayerGameEvents.PLAYER_EQUIPMENT_CHANGED,
+      this.controller.getAllEquipped(),
+      ...args
+    );
   }
 }

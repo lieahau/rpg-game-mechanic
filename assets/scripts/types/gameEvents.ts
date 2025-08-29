@@ -1,4 +1,8 @@
-export enum GameEvents {
+export enum GlobalGameEvents {
+  PLAYER_READY = 'PLAYER_READY',
+}
+
+export enum PlayerGameEvents {
   PLAYER_STATS_CHANGED = 'PLAYER_STATS_CHANGED',
   PLAYER_TAKE_DAMAGE = 'PLAYER_TAKE_DAMAGE',
   PLAYER_HEAL = 'PLAYER_HEAL',
