@@ -1,6 +1,6 @@
 import { Equipment } from '../models/equipment';
 import { EquipmentType } from '../models/types/enums';
-import { IEquipment, IEquipmentSlots } from '../models/types/interfaces';
+import { IEquipmentItem, IEquipmentSlots } from '../models/types/interfaces';
 import { IEntityFactory } from '../types/interfaces';
 
 export class EquipmentModelFactory implements IEntityFactory<Equipment> {
@@ -13,13 +13,17 @@ export class EquipmentModelFactory implements IEntityFactory<Equipment> {
     return this._instance;
   }
 
-  create(data: IEquipment): Equipment {
+  create(data: IEquipmentItem): Equipment {
     return new Equipment(data);
+  }
+
+  createBulk(data: IEquipmentItem[]): Equipment[] {
+    return data.map((item) => new Equipment(item));
   }
 
   createFromMap(dataMap: IEquipmentSlots): Equipment[] {
     return Object.values(dataMap)
-      .filter((data) => Object.values(EquipmentType).includes(data?.slot))
+      .filter((data) => Object.values(EquipmentType).includes(data?.item.slot))
       .map((data) => new Equipment(data));
   }
 }

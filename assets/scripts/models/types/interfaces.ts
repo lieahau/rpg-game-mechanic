@@ -19,11 +19,37 @@ export interface IEquipment {
   iconUrl: string;
 }
 
+export interface IEquipmentItem {
+  // instanceId is used for having multiple same Equipment "id", but have other fields with different value
+  // (e.g., a player has ten iron helmets, one is equipped and the rest is not)
+  instanceId: number;
+
+  item: IEquipment;
+
+  isEquipped: boolean;
+}
+
 export type IEquipmentSlots = {
-  [key in EquipmentType]?: IEquipment;
+  [key in EquipmentType]?: IEquipmentItem;
 };
+
+export interface IConsumableItem {
+  quantity: number;
+}
+
+export type IInventoryItem = IEquipmentItem | IConsumableItem;
+
+export function IsInventoryIEquipmentItem(item: IInventoryItem): item is IEquipmentItem {
+  return !!((item as IEquipmentItem)?.instanceId && (item as IEquipmentItem)?.item);
+}
+
+export interface IInventory {
+  maxSlots: number;
+  items: IInventoryItem[];
+}
 
 export interface IPlayerData {
   stats: Partial<IStats>;
   equipments: IEquipmentSlots;
+  inventory: IInventory;
 }

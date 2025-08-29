@@ -8,18 +8,57 @@
     "agility": 7,
     "intelligence": 5
   },
+
   "equipments": {
     "helmet": {
-      "id": 1,
-      "name": "Iron Helmet",
-      "desc": "A sturdy iron helmet.",
-      "slot": "helmet",
-      "stats": {
-        "strength": 7
-      },
-      "iconUrl": "images/iron_helmet"
+      "instanceId": 1,
+      "isEquipped": true,
+      "item": {
+        "id": 1,
+        "name": "Iron Helmet",
+        "desc": "A sturdy iron helmet.",
+        "slot": "helmet",
+        "stats": {
+          "strength": 7
+        },
+        "iconUrl": "images/iron_helmet"
+      }
     },
     "armor": null,
     "boots": null
+  },
+
+  "inventory": {
+    "maxSlots": 100,
+    "items": [
+      {
+        "instanceId": 1,
+        "isEquipped": true,
+        "item": {
+          "id": 1,
+          "name": "Iron Helmet",
+          "desc": "A sturdy iron helmet.",
+          "slot": "helmet",
+          "stats": {
+            "strength": 7
+          },
+          "iconUrl": "images/iron_helmet"
+        }
+      },
+      {
+        "instanceId": 2,
+        "isEquipped": false,
+        "item": {
+          "id": 1,
+          "name": "Iron Helmet",
+          "desc": "A sturdy iron helmet.",
+          "slot": "helmet",
+          "stats": {
+            "strength": 7
+          },
+          "iconUrl": "images/iron_helmet"
+        }
+      }
+    ]
   }
 }

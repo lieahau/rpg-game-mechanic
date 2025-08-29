@@ -22,18 +22,26 @@ export class EquipmentSystem {
     });
   }
 
-  equip(item: Equipment): IEquipChange {
-    const previous = this.slots.get(item.slot);
+  isSameEquipment(equipmentA?: Equipment, equipmentB?: Equipment) {
+    return (
+      equipmentA?.instanceId === equipmentB?.instanceId &&
+      equipmentA?.item.id === equipmentB?.item.id
+    );
+  }
 
-    if (previous === item) return { previous: null, new: null };
+  equip(equipment: Equipment): IEquipChange {
+    const previous = this.slots.get(equipment.item.slot);
 
-    this.slots.set(item.slot, item);
+    if (this.isSameEquipment(previous, equipment)) return { previous: null, new: null };
 
-    return { previous, new: item };
+    this.slots.set(equipment.item.slot, equipment);
+
+    return { previous, new: equipment };
   }
 
   unequip(slot: EquipmentType) {
     const previous = this.slots.get(slot);
+    previous?.setIsEquipped(false);
     this.slots.set(slot, null);
     return previous;
   }

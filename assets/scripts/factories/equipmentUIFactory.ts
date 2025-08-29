@@ -31,7 +31,7 @@ export class EquipmentUIFactory implements IEntityFactory<Node> {
 
       equipmentUI.setData(data);
 
-      const sf = await DataLoader.instance.loadSpriteFrame(data.iconUrl);
+      const sf = await DataLoader.instance.loadSpriteFrame(data.item.iconUrl);
       equipmentUI.setSpriteFrame(sf);
 
       return equipmentUINode;

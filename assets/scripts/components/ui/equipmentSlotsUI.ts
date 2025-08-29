@@ -126,8 +126,7 @@ export class EquipmentSlotsUI extends Component {
         if (!slotNode) return;
 
         // Check if existing UI already matches this equipment
-        if (currentUIRef?.getData() === equipment) return;
-        if (!currentUIRef && !equipment) return;
+        if (currentUIRef?.getData().instanceId === equipment?.instanceId) return;
 
         // Remove old UI if exists
         slotNode.removeAllChildren();
