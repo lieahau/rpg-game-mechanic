@@ -22,17 +22,10 @@ export class EquipmentSystem {
     });
   }
 
-  isSameEquipment(equipmentA?: Equipment, equipmentB?: Equipment) {
-    return (
-      equipmentA?.instanceId === equipmentB?.instanceId &&
-      equipmentA?.item.id === equipmentB?.item.id
-    );
-  }
-
   equip(equipment: Equipment): IEquipChange {
     const previous = this.slots.get(equipment.item.slot);
 
-    if (this.isSameEquipment(previous, equipment)) return { previous: null, new: null };
+    if (equipment?.isSame(previous)) return { previous: null, new: null };
 
     this.slots.set(equipment.item.slot, equipment);
 

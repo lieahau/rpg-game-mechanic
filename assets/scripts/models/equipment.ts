@@ -15,4 +15,11 @@ export class Equipment extends Item implements IEquipmentItem {
   getType(): ItemType {
     return ItemType.EQUIPMENT;
   }
+
+  isSame(comparisonEquipment?: Equipment): boolean {
+    return (
+      this.instanceId === comparisonEquipment?.instanceId &&
+      this.item.id === comparisonEquipment?.item.id
+    );
+  }
 }

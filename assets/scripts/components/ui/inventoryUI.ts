@@ -83,9 +83,7 @@ export class InventoryUI extends Component {
           this.slots[i].setContent(content);
 
           // set overlay to diferentiate the equipped equipments
-          const isEquipped = equipments.some(
-            (eq) => eq?.instanceId === item.instanceId && eq?.item.id === item.item.id
-          );
+          const isEquipped = equipments.some((eq) => item.isSame(eq));
           this.slots[i].setOverlay(isEquipped);
         }
       }

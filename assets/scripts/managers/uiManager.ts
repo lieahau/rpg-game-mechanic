@@ -73,9 +73,7 @@ export class UIManager extends Component {
         ([_, eq]) => eq
       );
 
-      const isEquipped = equippedEquipments.some(
-        (eq) => eq?.instanceId === item.instanceId && eq?.item.id === item.item.id
-      );
+      const isEquipped = equippedEquipments.some((eq) => item.isSame(eq));
 
       if (isEquipped) {
         this.itemDetailsUI.show(ItemDetailsType.CAN_UNEQUIP, selectedItem, itemDetails);
