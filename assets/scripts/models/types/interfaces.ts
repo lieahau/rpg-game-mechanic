@@ -26,11 +26,13 @@ export interface IEquipment {
 }
 
 export interface IEquipmentItem {
-  // instanceId is used for having multiple same IEquipment "id", but have other fields with different value
+  // instanceId is used to differentiate multiple same IEquipment "id", but have other fields with various value
   // (e.g., a player has two iron helmets, one has 100 durability and the other one has 20 durability)
   instanceId: number;
 
   item: IEquipment;
+  durability: number;
+  maxDurability: number;
 }
 
 export type IEquipmentSlots = {

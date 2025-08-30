@@ -12,6 +12,8 @@
   "equipments": {
     "helmet": {
       "instanceId": 2,
+      "durability": 85,
+      "maxDurability": 100,
       "item": {
         "id": 1,
         "name": "Iron Helmet",
@@ -32,6 +34,8 @@
     "items": [
       {
         "instanceId": 1,
+        "durability": 60,
+        "maxDurability": 100,
         "item": {
           "id": 1,
           "name": "Iron Helmet",
@@ -45,6 +49,8 @@
       },
       {
         "instanceId": 2,
+        "durability": 85,
+        "maxDurability": 100,
         "item": {
           "id": 1,
           "name": "Iron Helmet",
@@ -54,6 +60,158 @@
             "strength": 7
           },
           "iconUrl": "images/iron_helmet"
+        }
+      },
+      {
+        "instanceId": 1,
+        "durability": 5,
+        "maxDurability": 50,
+        "item": {
+          "id": 2,
+          "name": "Leather Helmet",
+          "desc": "An ordinary leather helmet.",
+          "slot": "helmet",
+          "stats": {
+            "strength": 2
+          },
+          "iconUrl": "images/leather_helmet"
+        }
+      },
+      {
+        "instanceId": 1,
+        "durability": 130,
+        "maxDurability": 150,
+        "item": {
+          "id": 3,
+          "name": "Magic Iron Armor",
+          "desc": "A magical iron armor.",
+          "slot": "armor",
+          "stats": {
+            "strength": 15,
+            "intelligence": 8
+          },
+          "iconUrl": "images/iron_armor"
+        }
+      },
+      {
+        "instanceId": 2,
+        "durability": 100,
+        "maxDurability": 150,
+        "item": {
+          "id": 3,
+          "name": "Magic Iron Armor",
+          "desc": "A magical iron armor.",
+          "slot": "armor",
+          "stats": {
+            "strength": 15,
+            "intelligence": 8
+          },
+          "iconUrl": "images/iron_armor"
+        }
+      },
+      {
+        "instanceId": 1,
+        "durability": 40,
+        "maxDurability": 50,
+        "item": {
+          "id": 4,
+          "name": "Leather Armor",
+          "desc": "An ordinary leather armor.",
+          "slot": "armor",
+          "stats": {
+            "strength": 4
+          },
+          "iconUrl": "images/leather_armor"
+        }
+      },
+      {
+        "instanceId": 2,
+        "durability": 30,
+        "maxDurability": 50,
+        "item": {
+          "id": 4,
+          "name": "Leather Armor",
+          "desc": "An ordinary leather armor.",
+          "slot": "armor",
+          "stats": {
+            "strength": 4
+          },
+          "iconUrl": "images/leather_armor"
+        }
+      },
+      {
+        "instanceId": 3,
+        "durability": 50,
+        "maxDurability": 50,
+        "item": {
+          "id": 4,
+          "name": "Leather Armor",
+          "desc": "An ordinary leather armor.",
+          "slot": "armor",
+          "stats": {
+            "strength": 4
+          },
+          "iconUrl": "images/leather_armor"
+        }
+      },
+      {
+        "instanceId": 1,
+        "durability": 7,
+        "maxDurability": 50,
+        "item": {
+          "id": 5,
+          "name": "Leather Boots",
+          "desc": "An ordinary leather boots.",
+          "slot": "boots",
+          "stats": {
+            "agility": 10
+          },
+          "iconUrl": "images/leather_boots"
+        }
+      },
+      {
+        "instanceId": 2,
+        "durability": 20,
+        "maxDurability": 50,
+        "item": {
+          "id": 5,
+          "name": "Leather Boots",
+          "desc": "An ordinary leather boots.",
+          "slot": "boots",
+          "stats": {
+            "agility": 10
+          },
+          "iconUrl": "images/leather_boots"
+        }
+      },
+      {
+        "instanceId": 1,
+        "durability": 80,
+        "maxDurability": 100,
+        "item": {
+          "id": 6,
+          "name": "Iron Boots",
+          "desc": "An sturdy iron boots.",
+          "slot": "boots",
+          "stats": {
+            "agility": 6
+          },
+          "iconUrl": "images/iron_boots"
+        }
+      },
+      {
+        "instanceId": 2,
+        "durability": 77,
+        "maxDurability": 100,
+        "item": {
+          "id": 6,
+          "name": "Iron Boots",
+          "desc": "An sturdy iron boots.",
+          "slot": "boots",
+          "stats": {
+            "agility": 6
+          },
+          "iconUrl": "images/iron_boots"
         }
       }
     ]

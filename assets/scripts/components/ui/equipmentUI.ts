@@ -27,6 +27,6 @@ export class EquipmentUI extends BaseItemUI {
   }
 
   protected getDetailContent(): string {
-    return `Instance ID: ${this.data.instanceId}\nID: ${this.data.item.id}\n${this.data.item.name}\nType: ${this.data.item.slot}\n${this.data.item.desc}\nStats: ${JSON.stringify(this.data.item.stats, null, 2)}`;
+    return `Instance ID: ${this.data.instanceId}\nID: ${this.data.item.id}\n\n${this.data.item.name}\nType: ${this.data.item.slot}\nDurability: ${this.data.durability}/${this.data.maxDurability}\n\n${this.data.item.desc}\n\nStats: ${JSON.stringify(this.data.item.stats, null, 2)}`;
   }
 }
