@@ -21,9 +21,8 @@ export class GameManager extends Component {
 
     try {
       const playerData = await DataLoader.instance.loadJson<IPlayerData>(FILENAME.JSON_PLAYER_DATA);
-      const playerNode = await PlayerFactory.instance.create(playerData);
+      const playerNode = await PlayerFactory.instance.create(playerData, this.gameplayRoot);
 
-      this.gameplayRoot.addChild(playerNode);
       director.emit(GlobalGameEvents.PLAYER_READY, playerNode);
     } catch (error) {
       // eslint-disable-next-line no-console

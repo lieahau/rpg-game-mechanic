@@ -33,6 +33,14 @@ export class PlayerController {
     return this.equipmentSystem.getAllEquipped();
   }
 
+  getInventoryItems() {
+    return this.inventorySystem.getItems();
+  }
+
+  getInventoryMaxSlotsAmount() {
+    return this.inventorySystem.getMaxSlots();
+  }
+
   takeDamage(amount: number) {
     this.stats.takeDamage(amount);
   }

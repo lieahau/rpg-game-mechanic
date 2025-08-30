@@ -1,12 +1,10 @@
-import { _decorator, instantiate, Node, Prefab } from 'cc';
+import { instantiate, Node, Prefab } from 'cc';
 import { IEntityFactory } from '../types/interfaces';
 import { Equipment } from '../models/equipment';
 import { DataLoader } from '../managers/dataLoader';
 import { FILENAME } from '../types/enums';
 import { EquipmentUI } from '../components/ui/equipmentUI';
-const { ccclass } = _decorator;
 
-@ccclass('EquipmentUIFactory')
 export class EquipmentUIFactory implements IEntityFactory<Node> {
   private prefab: Prefab;
 
@@ -19,7 +17,7 @@ export class EquipmentUIFactory implements IEntityFactory<Node> {
     return this._instance;
   }
 
-  async create(data: Equipment): Promise<Node> {
+  async create(data: Equipment, root?: Node): Promise<Node> {
     try {
       if (!this.prefab) {
         this.prefab = await DataLoader.instance.loadPrefab(FILENAME.PREFAB_EQUIPMENT_UI);
@@ -33,6 +31,8 @@ export class EquipmentUIFactory implements IEntityFactory<Node> {
 
       const sf = await DataLoader.instance.loadSpriteFrame(data.item.iconUrl);
       equipmentUI.setSpriteFrame(sf);
+
+      root?.addChild(equipmentUINode);
 
       return equipmentUINode;
     } catch (error) {

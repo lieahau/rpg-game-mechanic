@@ -5,6 +5,7 @@ import { GlobalGameEvents } from '../types/gameEvents';
 import { SpellButton } from '../components/ui/spellButton';
 import { DamageButton } from '../components/ui/damageButton';
 import { EquipmentSlotsUI } from '../components/ui/equipmentSlotsUI';
+import { InventoryUI } from '../components/ui/inventoryUI';
 const { ccclass, property } = _decorator;
 
 @ccclass('UIManager')
@@ -14,6 +15,9 @@ export class UIManager extends Component {
 
   @property(EquipmentSlotsUI)
   private equipmentSlotsUI?: EquipmentSlotsUI;
+
+  @property(InventoryUI)
+  private inventoryUI?: InventoryUI;
 
   @property(DamageButton)
   private damageButton?: DamageButton;
@@ -29,11 +33,17 @@ export class UIManager extends Component {
     director.off(GlobalGameEvents.PLAYER_READY, this.onPlayerReady, this);
   }
 
-  private onPlayerReady(player: Node) {
-    const playerEventTarget = player.getComponent(Player)?.getEventTarget();
+  private async onPlayerReady(player: Node) {
+    const playerComp = player.getComponent(Player);
+
+    this.inventoryUI?.setMaxSlots(playerComp.getInventoryMaxSlotsAmount());
+    this.inventoryUI?.init(playerComp.getInventoryItems(), playerComp.getEquippedEquipments());
+
+    const playerEventTarget = playerComp?.getEventTarget();
     if (playerEventTarget) {
       this.playerStatsHUD?.setPlayerEventTarget(playerEventTarget);
       this.equipmentSlotsUI?.setPlayerEventTarget(playerEventTarget);
+      this.inventoryUI?.setPlayerEventTarget(playerEventTarget);
       this.damageButton?.setPlayerEventTarget(playerEventTarget);
       this.spellButton?.setPlayerEventTarget(playerEventTarget);
     }

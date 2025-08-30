@@ -1,10 +1,11 @@
-import { _decorator, Component, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Sprite, SpriteFrame } from 'cc';
 import { Equipment } from '../../models/equipment';
+import { BaseItemUI } from './baseItemUI';
 const { ccclass } = _decorator;
 
 @ccclass('EquipmentUI')
-export class EquipmentUI extends Component {
-  private data: Equipment;
+export class EquipmentUI extends BaseItemUI {
+  protected data: Equipment;
 
   getData() {
     return this.data;

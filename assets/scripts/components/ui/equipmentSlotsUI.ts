@@ -128,19 +128,15 @@ export class EquipmentSlotsUI extends Component {
         // Check if existing UI already matches this equipment
         if (currentUIRef?.getData().instanceId === equipment?.instanceId) return;
 
-        // Remove old UI if exists
         slotNode.removeAllChildren();
 
         let equipmentUI: EquipmentUI | undefined;
 
         if (equipment) {
-          // Create new EquipmentUI
-          const equipmentNode = await EquipmentUIFactory.instance.create(equipment);
-          slotNode.addChild(equipmentNode);
+          const equipmentNode = await EquipmentUIFactory.instance.create(equipment, slotNode);
           equipmentUI = equipmentNode.getComponent(EquipmentUI);
         }
 
-        // Save reference
         switch (type) {
           case EquipmentType.HELMET:
             this.helmet.ui = equipmentUI;

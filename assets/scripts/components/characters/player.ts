@@ -1,9 +1,10 @@
 import { _decorator, Component, EventTarget } from 'cc';
-import { IPlayerData } from '../../models/types/interfaces';
+import { IPlayerData, IStats } from '../../models/types/interfaces';
 import { PlayerController } from '../../controllers/playerController';
 import { Equipment } from '../../models/equipment';
 import { EquipmentType } from '../../models/types/enums';
 import { PlayerGameEvents } from '../../types/gameEvents';
+import { Item } from '../../models/item';
 
 const { ccclass } = _decorator;
 
@@ -41,8 +42,20 @@ export class Player extends Component {
     return this.eventTarget;
   }
 
-  getStats() {
+  getStats(): IStats {
     return this.controller.getStats();
+  }
+
+  getEquippedEquipments(): Map<EquipmentType, Equipment> {
+    return this.controller.getAllEquipped();
+  }
+
+  getInventoryItems(): Item[] {
+    return this.controller.getInventoryItems();
+  }
+
+  getInventoryMaxSlotsAmount(): number {
+    return this.controller.getInventoryMaxSlotsAmount();
   }
 
   takeDamage(amount: number) {

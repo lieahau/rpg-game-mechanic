@@ -12,7 +12,6 @@
   "equipments": {
     "helmet": {
       "instanceId": 1,
-      "isEquipped": true,
       "item": {
         "id": 1,
         "name": "Iron Helmet",
@@ -33,7 +32,6 @@
     "items": [
       {
         "instanceId": 1,
-        "isEquipped": true,
         "item": {
           "id": 1,
           "name": "Iron Helmet",
@@ -47,7 +45,6 @@
       },
       {
         "instanceId": 2,
-        "isEquipped": false,
         "item": {
           "id": 1,
           "name": "Iron Helmet",

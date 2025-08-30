@@ -41,7 +41,6 @@ export class EquipmentSystem {
 
   unequip(slot: EquipmentType) {
     const previous = this.slots.get(slot);
-    previous?.setIsEquipped(false);
     this.slots.set(slot, null);
     return previous;
   }

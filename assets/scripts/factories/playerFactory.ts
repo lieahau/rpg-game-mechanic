@@ -17,7 +17,7 @@ export class PlayerFactory implements IEntityFactory<Node> {
     return this._instance;
   }
 
-  async create(data: IPlayerData): Promise<Node> {
+  async create(data: IPlayerData, root: Node): Promise<Node> {
     try {
       if (!this.prefab) {
         this.prefab = await DataLoader.instance.loadPrefab(FILENAME.PREFAB_PLAYER);
@@ -28,6 +28,7 @@ export class PlayerFactory implements IEntityFactory<Node> {
       if (!player) playerNode.addComponent(Player);
 
       player?.init(data);
+      root.addChild(playerNode);
 
       return playerNode;
     } catch (error) {

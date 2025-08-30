@@ -1,23 +1,26 @@
 import { EquipmentModelFactory } from '../factories/equipmentModelFactory';
-import { IInventory, IInventoryItem, IsInventoryIEquipmentItem } from './types/interfaces';
+import { Item } from './item';
+import { IInventory, IsInventoryIEquipmentItem } from './types/interfaces';
 
-export class InventorySystem implements IInventory {
-  readonly items: IInventoryItem[];
-  readonly maxSlots: number;
+export class InventorySystem {
+  private items: Item[];
+  private maxSlots: number;
 
   private filledSlots: number;
 
   constructor(data: IInventory) {
     this.maxSlots = data.maxSlots;
 
+    // convert IEquipment to Equipment models
     const equipmentItems = data.items.filter((item) => IsInventoryIEquipmentItem(item));
     const equipments = EquipmentModelFactory.instance.createBulk(equipmentItems);
+
     this.items = [...equipments];
 
     this.filledSlots = this.items.length;
   }
 
-  getItems(): Array<IInventoryItem> {
+  getItems(): Array<Item> {
     return this.items;
   }
 
@@ -25,18 +28,22 @@ export class InventorySystem implements IInventory {
     return this.maxSlots;
   }
 
+  getFilledSlots(): number {
+    return this.filledSlots;
+  }
+
   hasSpace(requiredSlots: number = 1): boolean {
     return this.filledSlots + requiredSlots <= this.maxSlots;
   }
 
-  addItem(item: IInventoryItem): boolean {
+  addItem(item: Item): boolean {
     if (!this.hasSpace()) return false;
 
     this.items.push(item);
     return true;
   }
 
-  removeItem(item: IInventoryItem): IInventoryItem | null {
+  removeItem(item: Item): Item | null {
     const index = this.items.findIndex((it) => it === item);
     if (index === -1) return null;
 
