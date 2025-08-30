@@ -11,7 +11,7 @@
 
   "equipments": {
     "helmet": {
-      "instanceId": 1,
+      "instanceId": 2,
       "item": {
         "id": 1,
         "name": "Iron Helmet",
@@ -28,7 +28,7 @@
   },
 
   "inventory": {
-    "maxSlots": 100,
+    "maxSlots": 50,
     "items": [
       {
         "instanceId": 1,

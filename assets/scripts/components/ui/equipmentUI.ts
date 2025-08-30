@@ -21,4 +21,8 @@ export class EquipmentUI extends BaseItemUI {
       sprite.spriteFrame = spriteFrame;
     }
   }
+
+  protected getTooltipContent(): string {
+    return `${this.data.item.name}\nType: ${this.data.item.slot}\nStats: ${JSON.stringify(this.data.item.stats, null, 2)}`;
+  }
 }

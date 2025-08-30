@@ -1,5 +1,7 @@
 export enum GlobalGameEvents {
   PLAYER_READY = 'PLAYER_READY',
+  ITEM_HOVER_ENTER = 'ITEM_HOVER_ENTER',
+  ITEM_HOVER_LEAVE = 'ITEM_HOVER_LEAVE',
 }
 
 export enum PlayerGameEvents {
