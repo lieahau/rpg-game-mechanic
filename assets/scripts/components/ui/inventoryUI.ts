@@ -54,30 +54,43 @@ export class InventoryUI extends Component {
   }
 
   async init(items: Item[], equippedEquipments: Map<EquipmentType, Equipment>) {
-    await this.initEmptySlots();
-    await this.initSlotItems(items, equippedEquipments);
-    this.setLimitLabel();
+    try {
+      await this.initEmptySlots();
+      await this.initSlotItems(items, equippedEquipments);
+      this.setLimitLabel();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to init inventory UI: ', error);
+    }
   }
 
   private async initEmptySlots() {
-    this.slots = await InventorySlotsUIFactory.instance.createBulk(this.maxSlots, this.grid);
+    try {
+      this.slots = await InventorySlotsUIFactory.instance.createBulk(this.maxSlots, this.grid);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   private async initSlotItems(items: Item[], equippedEquipments: Map<EquipmentType, Equipment>) {
-    const equipments = Array.from(equippedEquipments.values());
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].getType() === ItemType.EQUIPMENT) {
-        const item = items[i] as Equipment;
-        const content = await EquipmentUIFactory.instance.create(item);
+    try {
+      const equipments = Array.from(equippedEquipments.values());
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].getType() === ItemType.EQUIPMENT) {
+          const item = items[i] as Equipment;
+          const content = await EquipmentUIFactory.instance.create(item);
 
-        this.slots[i].setContent(content);
+          this.slots[i].setContent(content);
 
-        // set overlay to diferentiate the equipped equipments
-        const isEquipped = equipments.some(
-          (eq) => eq?.instanceId === item.instanceId && eq?.item.id === item.item.id
-        );
-        this.slots[i].setOverlay(isEquipped);
+          // set overlay to diferentiate the equipped equipments
+          const isEquipped = equipments.some(
+            (eq) => eq?.instanceId === item.instanceId && eq?.item.id === item.item.id
+          );
+          this.slots[i].setOverlay(isEquipped);
+        }
       }
+    } catch (error) {
+      throw new Error(error);
     }
   }
 

@@ -25,4 +25,8 @@ export class EquipmentUI extends BaseItemUI {
   protected getTooltipContent(): string {
     return `${this.data.item.name}\nType: ${this.data.item.slot}\nStats: ${JSON.stringify(this.data.item.stats, null, 2)}`;
   }
+
+  protected getDetailContent(): string {
+    return `Instance ID: ${this.data.instanceId}\nID: ${this.data.item.id}\n${this.data.item.name}\nType: ${this.data.item.slot}\n${this.data.item.desc}\nStats: ${JSON.stringify(this.data.item.stats, null, 2)}`;
+  }
 }

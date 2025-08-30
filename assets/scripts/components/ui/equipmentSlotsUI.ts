@@ -1,4 +1,4 @@
-import { _decorator, Button, Component, EventTarget, Node } from 'cc';
+import { _decorator, Component, EventTarget, Node } from 'cc';
 import { PlayerGameEvents } from '../../types/gameEvents';
 import { EquipmentType } from '../../models/types/enums';
 import { Equipment } from '../../models/equipment';
@@ -12,9 +12,6 @@ class EquipmentSlotUI {
   slot?: Node;
 
   ui?: EquipmentUI;
-
-  @property(Button)
-  unequipButton?: Button;
 }
 
 @ccclass('EquipmentSlotsUI')
@@ -30,17 +27,8 @@ export class EquipmentSlotsUI extends Component {
 
   private playerEventTarget?: EventTarget;
 
-  onLoad() {
-    this.helmet.unequipButton?.node.on(Button.EventType.CLICK, this.onClickUnequipHelmet, this);
-    this.armor.unequipButton?.node.on(Button.EventType.CLICK, this.onClickUnequipArmor, this);
-    this.boots.unequipButton?.node.on(Button.EventType.CLICK, this.onClickUnequipBoots, this);
-  }
-
   onDestroy() {
     this.setPlayerEventListenersOff();
-    this.helmet.unequipButton?.node.off(Button.EventType.CLICK, this.onClickUnequipHelmet, this);
-    this.armor.unequipButton?.node.off(Button.EventType.CLICK, this.onClickUnequipArmor, this);
-    this.boots.unequipButton?.node.off(Button.EventType.CLICK, this.onClickUnequipBoots, this);
   }
 
   setPlayerEventTarget(eventTarget: EventTarget) {
@@ -65,41 +53,13 @@ export class EquipmentSlotsUI extends Component {
     );
   }
 
-  private onClickUnequipHelmet() {
-    this.playerEventTarget?.emit(
-      PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
-      EquipmentType.HELMET
-    );
-  }
-
-  private onClickUnequipArmor() {
-    this.playerEventTarget?.emit(
-      PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
-      EquipmentType.ARMOR
-    );
-  }
-
-  private onClickUnequipBoots() {
-    this.playerEventTarget?.emit(
-      PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
-      EquipmentType.BOOTS
-    );
-  }
-
   private async onPlayerEquipmentChanged(dataMap: Map<EquipmentType, Equipment>) {
     try {
       await this.updateSlotsUI(dataMap);
-      this.updateUnequipButtonStates();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Failed to change equipment slots UI: ', error);
     }
-  }
-
-  private updateUnequipButtonStates() {
-    if (this.helmet.unequipButton) this.helmet.unequipButton.interactable = !!this.helmet.ui;
-    if (this.armor.unequipButton) this.armor.unequipButton.interactable = !!this.armor.ui;
-    if (this.boots.unequipButton) this.boots.unequipButton.interactable = !!this.boots.ui;
   }
 
   private async updateSlotsUI(dataMap: Map<EquipmentType, Equipment>) {

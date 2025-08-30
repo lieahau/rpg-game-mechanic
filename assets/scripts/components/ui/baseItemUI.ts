@@ -9,14 +9,20 @@ export abstract class BaseItemUI extends Component {
 
   abstract getData(): Item;
 
-  onDestroy() {
-    this.node.off(Node.EventType.MOUSE_ENTER, this.onMouseEnter, this);
-    this.node.off(Node.EventType.MOUSE_LEAVE, this.onMouseLeave, this);
-  }
-
   onLoad() {
     this.node.on(Node.EventType.MOUSE_ENTER, this.onMouseEnter, this);
     this.node.on(Node.EventType.MOUSE_LEAVE, this.onMouseLeave, this);
+    this.node.on(Node.EventType.TOUCH_START, this.onClick, this);
+  }
+
+  onDestroy() {
+    this.node.off(Node.EventType.MOUSE_ENTER, this.onMouseEnter, this);
+    this.node.off(Node.EventType.MOUSE_LEAVE, this.onMouseLeave, this);
+    this.node.off(Node.EventType.TOUCH_START, this.onClick, this);
+  }
+
+  protected onClick() {
+    director.emit(GlobalGameEvents.ITEM_CLICK, this.getData(), this.getDetailContent());
   }
 
   protected onMouseEnter(event: EventMouse) {
@@ -36,6 +42,10 @@ export abstract class BaseItemUI extends Component {
   }
 
   protected getTooltipContent(): string {
+    return 'Unknown Item';
+  }
+
+  protected getDetailContent(): string {
     return 'Unknown Item';
   }
 }
