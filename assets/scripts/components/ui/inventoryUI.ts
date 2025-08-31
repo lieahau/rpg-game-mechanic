@@ -159,6 +159,7 @@ export class InventoryUI extends Component {
       contentUI.updateQuantity();
       if (contentUI.getData().getQuantity() === 0) {
         slot.setContent(null);
+        this.setLimitLabel();
         if (slotUIs.length === 1) {
           // if this is the only slot and consumable's quantity reached 0, then inform the itemDetailsUI
           this.eventTarget.emit(InventoryGameEvents.INVENTORY_CONSUMABLE_EMPTIED);
