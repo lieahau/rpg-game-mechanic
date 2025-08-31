@@ -213,6 +213,54 @@
           },
           "iconUrl": "images/iron_boots"
         }
+      },
+      {
+        "quantity": 99,
+        "item": {
+          "id": 7,
+          "name": "HP Potion",
+          "desc": "Recover health.",
+          "stats": {
+            "health": 10
+          },
+          "iconUrl": "images/health_potion"
+        }
+      },
+      {
+        "quantity": 2,
+        "item": {
+          "id": 7,
+          "name": "HP Potion",
+          "desc": "Recover health.",
+          "stats": {
+            "health": 10
+          },
+          "iconUrl": "images/health_potion"
+        }
+      },
+      {
+        "quantity": 99,
+        "item": {
+          "id": 8,
+          "name": "MP Potion",
+          "desc": "Recover mana.",
+          "stats": {
+            "mana": 5
+          },
+          "iconUrl": "images/mana_potion"
+        }
+      },
+      {
+        "quantity": 3,
+        "item": {
+          "id": 8,
+          "name": "MP Potion",
+          "desc": "Recover mana.",
+          "stats": {
+            "mana": 5
+          },
+          "iconUrl": "images/mana_potion"
+        }
       }
     ]
   }
