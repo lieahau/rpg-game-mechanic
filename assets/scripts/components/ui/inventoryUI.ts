@@ -5,7 +5,7 @@ import { Equipment } from '../../models/equipment';
 import { InventorySlotsUIFactory } from '../../factories/inventorySlotsUIFactory';
 import { EquipmentUIFactory } from '../../factories/equipmentUIFactory';
 import { InventorySlotUI } from './inventorySlotUI';
-import { Item } from '../../models/item';
+import { InventorySystem } from '../../models/inventorySystem';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryUI')
@@ -16,9 +16,9 @@ export class InventoryUI extends Component {
   @property(Label)
   private limitLabel?: Label;
 
-  private playerEventTarget?: EventTarget;
+  private inventorySystem: InventorySystem;
 
-  private maxSlots: number;
+  private playerEventTarget?: EventTarget;
 
   private slots: InventorySlotUI[] = [];
 
@@ -26,25 +26,17 @@ export class InventoryUI extends Component {
     this.setPlayerEventListenersOff();
   }
 
-  getFilledSlots(): InventorySlotUI[] {
-    return this.slots.filter((slot) => slot.hasContent());
+  getMaxSlots(): number {
+    return this.inventorySystem.getMaxSlots();
   }
 
-  getEquipmentInventorySlots(): InventorySlotUI[] {
-    return this.getFilledSlots().filter(
-      (slot) => slot.getContentData()?.getType() === ItemType.EQUIPMENT
-    );
-  }
+  getEquipmentInventorySlotUI(equipment: Equipment): InventorySlotUI {
+    return this.slots.find((slot) => {
+      const data = slot.getContentData();
+      if (!(data instanceof Equipment)) return false;
 
-  getEquipmentInventorySlot(equipmentInstanceId: number, equipmentId: number): InventorySlotUI {
-    return this.getEquipmentInventorySlots().find((slot) => {
-      const data = slot.getContentData() as Equipment;
-      return data.instanceId === equipmentInstanceId && data.item.id === equipmentId;
+      return data.isSame(equipment);
     });
-  }
-
-  setMaxSlots(value: number) {
-    this.maxSlots = value;
   }
 
   setPlayerEventTarget(eventTarget: EventTarget) {
@@ -53,10 +45,11 @@ export class InventoryUI extends Component {
     this.setPlayerEventListenersOn();
   }
 
-  async init(items: Item[], equippedEquipments: Map<EquipmentType, Equipment>) {
+  async init(inventorySystem: InventorySystem, equippedEquipments: Map<EquipmentType, Equipment>) {
     try {
+      this.inventorySystem = inventorySystem;
       await this.initEmptySlots();
-      await this.initSlotItems(items, equippedEquipments);
+      await this.initSlotItems(equippedEquipments);
       this.setLimitLabel();
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -66,14 +59,18 @@ export class InventoryUI extends Component {
 
   private async initEmptySlots() {
     try {
-      this.slots = await InventorySlotsUIFactory.instance.createBulk(this.maxSlots, this.grid);
+      this.slots = await InventorySlotsUIFactory.instance.createBulk(
+        this.inventorySystem.getMaxSlots(),
+        this.grid
+      );
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  private async initSlotItems(items: Item[], equippedEquipments: Map<EquipmentType, Equipment>) {
+  private async initSlotItems(equippedEquipments: Map<EquipmentType, Equipment>) {
     try {
+      const items = this.inventorySystem.getItems();
       const equipments = Array.from(equippedEquipments.values());
       for (let i = 0; i < items.length; i++) {
         if (items[i].getType() === ItemType.EQUIPMENT) {
@@ -85,6 +82,8 @@ export class InventoryUI extends Component {
           // set overlay to diferentiate the equipped equipments
           const isEquipped = equipments.some((eq) => item.isSame(eq));
           this.slots[i].setOverlay(isEquipped);
+        } else {
+          // TODO spawn consumable
         }
       }
     } catch (error) {
@@ -114,19 +113,21 @@ export class InventoryUI extends Component {
     newItem?: Equipment
   ) {
     if (previousItem) {
-      const slot = this.getEquipmentInventorySlot(previousItem.instanceId, previousItem.item.id);
+      const slot = this.getEquipmentInventorySlotUI(previousItem);
       slot.setOverlay(false);
     }
 
     if (newItem) {
-      const slot = this.getEquipmentInventorySlot(newItem.instanceId, newItem.item.id);
+      const slot = this.getEquipmentInventorySlotUI(newItem);
       slot.setOverlay(true);
     }
   }
 
   private setLimitLabel() {
     if (this.limitLabel) {
-      this.limitLabel.string = `${this.getFilledSlots().length}/${this.maxSlots}`;
+      const filledSlots = this.inventorySystem.getFilledSlotsAmount();
+      const maxSlots = this.getMaxSlots();
+      this.limitLabel.string = `${filledSlots}/${maxSlots}`;
     }
   }
 }

@@ -52,6 +52,10 @@ export class Player extends Component {
     return this.controller.getAllEquipped();
   }
 
+  getInventorySystem() {
+    return this.controller.getInventorySystem();
+  }
+
   getInventoryItems(): Item[] {
     return this.controller.getInventoryItems();
   }

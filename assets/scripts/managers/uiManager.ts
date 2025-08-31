@@ -48,8 +48,7 @@ export class UIManager extends Component {
   private async onPlayerReady(player: Node) {
     this.player = player.getComponent(Player);
 
-    this.inventoryUI?.setMaxSlots(this.player.getInventoryMaxSlotsAmount());
-    this.inventoryUI?.init(this.player.getInventoryItems(), this.player.getEquippedEquipments());
+    this.inventoryUI?.init(this.player.getInventorySystem(), this.player.getEquippedEquipments());
 
     const playerEventTarget = this.player?.getEventTarget();
     if (playerEventTarget) {

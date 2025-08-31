@@ -39,15 +39,24 @@ export type IEquipmentSlots = {
   [key in EquipmentType]?: IEquipmentItem;
 };
 
+export interface IConsumable {
+  id: number;
+  name: string;
+  desc: string;
+  stats: Partial<IStats>;
+  iconUrl: string;
+}
+
 export interface IConsumableItem {
   quantity: number;
+  item: IConsumable;
 }
 
 export interface IInventory {
   maxSlots: number;
-  items: (IEquipment | IConsumableItem)[];
+  items: (IEquipmentItem | IConsumableItem)[];
 }
 
 export function IsInventoryIEquipmentItem(item): item is IEquipmentItem {
-  return !!((item as IEquipmentItem)?.instanceId && (item as IEquipmentItem)?.item);
+  return !!(item as IEquipmentItem)?.instanceId;
 }

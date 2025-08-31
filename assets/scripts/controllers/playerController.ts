@@ -33,6 +33,10 @@ export class PlayerController {
     return this.equipmentSystem.getAllEquipped();
   }
 
+  getInventorySystem() {
+    return this.inventorySystem;
+  }
+
   getInventoryItems() {
     return this.inventorySystem.getItems();
   }
