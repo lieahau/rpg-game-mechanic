@@ -22,14 +22,13 @@ export class EquipmentUIFactory implements IEntityFactory<Node> {
       if (!this.prefab) {
         this.prefab = await DataLoader.instance.loadPrefab(FILENAME.PREFAB_EQUIPMENT_UI);
       }
+      const sf = await DataLoader.instance.loadSpriteFrame(data.item.iconUrl);
 
       const equipmentUINode = instantiate(this.prefab);
       const equipmentUI = equipmentUINode.getComponent(EquipmentUI);
       if (!equipmentUI) equipmentUINode.addComponent(EquipmentUI);
 
       equipmentUI.setData(data);
-
-      const sf = await DataLoader.instance.loadSpriteFrame(data.item.iconUrl);
       equipmentUI.setSpriteFrame(sf);
 
       root?.addChild(equipmentUINode);
