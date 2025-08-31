@@ -17,6 +17,10 @@ export class InventorySlotUI extends Component {
     return !!this.contentItem;
   }
 
+  getContentItemUI(): BaseItemUI {
+    return this.contentItem;
+  }
+
   getContentData(): Item | undefined {
     return this.contentItem?.getData();
   }

@@ -220,6 +220,7 @@
           "id": 7,
           "name": "HP Potion",
           "desc": "Recover health.",
+          "type": "hp_potion",
           "stats": {
             "health": 10
           },
@@ -232,22 +233,11 @@
           "id": 7,
           "name": "HP Potion",
           "desc": "Recover health.",
+          "type": "hp_potion",
           "stats": {
             "health": 10
           },
           "iconUrl": "images/health_potion"
-        }
-      },
-      {
-        "quantity": 99,
-        "item": {
-          "id": 8,
-          "name": "MP Potion",
-          "desc": "Recover mana.",
-          "stats": {
-            "mana": 5
-          },
-          "iconUrl": "images/mana_potion"
         }
       },
       {
@@ -256,6 +246,7 @@
           "id": 8,
           "name": "MP Potion",
           "desc": "Recover mana.",
+          "type": "mp_potion",
           "stats": {
             "mana": 5
           },

@@ -68,6 +68,16 @@ export class InventorySystem {
     return removed;
   }
 
+  reduceConsumableQuantity(item: Consumable) {
+    const owned = this.getConsumableItem(item.item.id);
+    if (owned.length === 0) return;
+
+    owned.sort((a, b) => (a.getQuantity() < b.getQuantity() ? -1 : 1));
+    owned[0].removeQuantity(1);
+
+    if (owned[0].getQuantity() <= 0) this.removeItem(item);
+  }
+
   private addConsumableItem(item: Consumable): boolean {
     let remaining = item.getQuantity();
     let isSuccess = false;

@@ -44,6 +44,12 @@ export class UIManager extends Component {
     director.off(GlobalGameEvents.ITEM_CLICK, this.onShowItemDetails, this);
   }
 
+  start() {
+    if (this.inventoryUI) {
+      this.itemDetailsUI?.setInventoryEventTarget(this.inventoryUI.getEventTarget());
+    }
+  }
+
   private async onPlayerReady(player: Node) {
     this.player = player.getComponent(Player);
 

@@ -1,9 +1,10 @@
 import { EquipmentModelFactory } from '../factories/equipmentModelFactory';
+import { Consumable } from '../models/consumable';
 import { Equipment } from '../models/equipment';
 import { EquipmentSystem, IEquipChange } from '../models/equipmentSystem';
 import { InventorySystem } from '../models/inventorySystem';
 import { PlayerStats } from '../models/playerStats';
-import { EquipmentType } from '../models/types/enums';
+import { ConsumableType, EquipmentType } from '../models/types/enums';
 import { IPlayerData } from '../models/types/interfaces';
 
 export class PlayerController {
@@ -46,19 +47,34 @@ export class PlayerController {
   }
 
   takeDamage(amount: number) {
-    this.stats.takeDamage(amount);
+    return this.stats.takeDamage(amount);
   }
 
   heal(amount: number) {
-    this.stats.heal(amount);
+    return this.stats.heal(amount);
   }
 
   useMana(amount: number) {
-    this.stats.useMana(amount);
+    return this.stats.useMana(amount);
   }
 
   restoreMana(amount: number) {
-    this.stats.restoreMana(amount);
+    return this.stats.restoreMana(amount);
+  }
+
+  useConsumable(item: Consumable) {
+    let succeed = false;
+    if (item.item.type === ConsumableType.HP_POTION && item.item.stats.health) {
+      succeed = this.heal(item.item.stats.health);
+    } else if (item.item.type === ConsumableType.MP_POTION && item.item.stats.mana) {
+      succeed = this.restoreMana(item.item.stats.mana);
+    }
+
+    if (succeed) {
+      this.inventorySystem.reduceConsumableQuantity(item);
+    }
+
+    return succeed;
   }
 
   equip(equipment: Equipment): IEquipChange {

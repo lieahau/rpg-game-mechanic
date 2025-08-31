@@ -33,27 +33,39 @@ export class PlayerStats {
     }, this.baseStats.clone()) as IStats;
   }
 
+  isFullHealth() {
+    return this.baseStats.health >= this.baseStats.maxHealth;
+  }
+
   takeDamage(amount: number) {
-    if (amount < 0) return;
+    if (amount <= 0) return false;
 
     this.baseStats.health = Math.max(this.baseStats.health - amount, 0);
+    return true;
   }
 
   heal(amount: number) {
-    if (amount < 0) return;
+    if (amount <= 0 || this.isFullHealth()) return false;
 
     this.baseStats.health = Math.min(this.baseStats.health + amount, this.baseStats.maxHealth);
+    return true;
+  }
+
+  isFullMana() {
+    return this.baseStats.mana >= this.baseStats.maxMana;
   }
 
   useMana(amount: number) {
-    if (amount < 0) return;
+    if (amount <= 0) return false;
 
     this.baseStats.mana = Math.max(this.baseStats.mana - amount, 0);
+    return true;
   }
 
   restoreMana(amount: number) {
-    if (amount < 0) return;
+    if (amount <= 0 || this.isFullMana()) return false;
 
     this.baseStats.mana = Math.min(this.baseStats.mana + amount, this.baseStats.maxMana);
+    return true;
   }
 }

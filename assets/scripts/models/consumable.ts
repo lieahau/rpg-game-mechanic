@@ -1,6 +1,5 @@
 import { Item } from './item';
 import { IConsumable, IConsumableItem } from './types/interfaces';
-import { ItemType } from './types/enums';
 
 export class Consumable extends Item implements IConsumableItem {
   quantity: number;
@@ -10,10 +9,6 @@ export class Consumable extends Item implements IConsumableItem {
     super();
     this.item = data.item;
     this.quantity = data.quantity;
-  }
-
-  getType(): ItemType {
-    return ItemType.CONSUMABLE;
   }
 
   getQuantity(): number {

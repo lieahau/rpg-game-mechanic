@@ -1,5 +1,5 @@
 import { _decorator, Component, EventTarget, Label, Node } from 'cc';
-import { PlayerGameEvents } from '../../types/gameEvents';
+import { InventoryGameEvents, PlayerGameEvents } from '../../types/gameEvents';
 import { EquipmentType } from '../../models/types/enums';
 import { Equipment } from '../../models/equipment';
 import { InventorySlotsUIFactory } from '../../factories/inventorySlotsUIFactory';
@@ -8,6 +8,7 @@ import { InventorySlotUI } from './inventorySlotUI';
 import { InventorySystem } from '../../models/inventorySystem';
 import { Consumable } from '../../models/consumable';
 import { ConsumableUIFactory } from '../../factories/consumableUIFactory';
+import { ConsumableUI } from './consumableUI';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryUI')
@@ -22,10 +23,60 @@ export class InventoryUI extends Component {
 
   private playerEventTarget?: EventTarget;
 
+  private eventTarget: EventTarget = new EventTarget();
+
   private slots: InventorySlotUI[] = [];
 
   onDestroy() {
     this.setPlayerEventListenersOff();
+  }
+
+  async init(inventorySystem: InventorySystem, equippedEquipments: Map<EquipmentType, Equipment>) {
+    try {
+      this.inventorySystem = inventorySystem;
+      await this.initEmptySlots();
+      await this.initSlotItems(equippedEquipments);
+      this.setLimitLabel();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to init inventory UI: ', error);
+    }
+  }
+
+  getEventTarget() {
+    return this.eventTarget;
+  }
+
+  setPlayerEventTarget(eventTarget: EventTarget) {
+    this.setPlayerEventListenersOff();
+    this.playerEventTarget = eventTarget;
+    this.setPlayerEventListenersOn();
+  }
+
+  private setPlayerEventListenersOn() {
+    this.playerEventTarget?.on(
+      PlayerGameEvents.PLAYER_EQUIPMENT_CHANGED,
+      this.onPlayerEquipmentChanged,
+      this
+    );
+    this.playerEventTarget?.on(
+      PlayerGameEvents.PLAYER_CONSUMABLE_USED,
+      this.onPlayerConsumableUsed,
+      this
+    );
+  }
+
+  private setPlayerEventListenersOff() {
+    this.playerEventTarget?.off(
+      PlayerGameEvents.PLAYER_EQUIPMENT_CHANGED,
+      this.onPlayerEquipmentChanged,
+      this
+    );
+    this.playerEventTarget?.on(
+      PlayerGameEvents.PLAYER_CONSUMABLE_USED,
+      this.onPlayerConsumableUsed,
+      this
+    );
   }
 
   getMaxSlots(): number {
@@ -41,22 +92,13 @@ export class InventoryUI extends Component {
     });
   }
 
-  setPlayerEventTarget(eventTarget: EventTarget) {
-    this.setPlayerEventListenersOff();
-    this.playerEventTarget = eventTarget;
-    this.setPlayerEventListenersOn();
-  }
+  getConsumableInventorySlotUIs(consumable: Consumable): InventorySlotUI[] {
+    return this.slots.filter((slot) => {
+      const data = slot.getContentData();
+      if (!(data instanceof Consumable)) return false;
 
-  async init(inventorySystem: InventorySystem, equippedEquipments: Map<EquipmentType, Equipment>) {
-    try {
-      this.inventorySystem = inventorySystem;
-      await this.initEmptySlots();
-      await this.initSlotItems(equippedEquipments);
-      this.setLimitLabel();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to init inventory UI: ', error);
-    }
+      return data.item.id === consumable.item.id;
+    });
   }
 
   private async initEmptySlots() {
@@ -93,23 +135,7 @@ export class InventoryUI extends Component {
     }
   }
 
-  private setPlayerEventListenersOn() {
-    this.playerEventTarget?.on(
-      PlayerGameEvents.PLAYER_EQUIPMENT_CHANGED,
-      this.onPlayerEquipmentChanged,
-      this
-    );
-  }
-
-  private setPlayerEventListenersOff() {
-    this.playerEventTarget?.off(
-      PlayerGameEvents.PLAYER_EQUIPMENT_CHANGED,
-      this.onPlayerEquipmentChanged,
-      this
-    );
-  }
-
-  private async onPlayerEquipmentChanged(
+  private onPlayerEquipmentChanged(
     dataMap: Map<EquipmentType, Equipment>,
     previousItem?: Equipment,
     newItem?: Equipment
@@ -123,6 +149,22 @@ export class InventoryUI extends Component {
       const slot = this.getEquipmentInventorySlotUI(newItem);
       slot.setOverlay(true);
     }
+  }
+
+  private onPlayerConsumableUsed(item: Consumable) {
+    const slotUIs = this.getConsumableInventorySlotUIs(item);
+
+    slotUIs.forEach((slot) => {
+      const contentUI = slot.getContentItemUI() as ConsumableUI;
+      contentUI.updateQuantity();
+      if (contentUI.getData().getQuantity() === 0) {
+        slot.setContent(null);
+        if (slotUIs.length === 1) {
+          // if this is the only slot and consumable's quantity reached 0, then inform the itemDetailsUI
+          this.eventTarget.emit(InventoryGameEvents.INVENTORY_CONSUMABLE_EMPTIED);
+        }
+      }
+    });
   }
 
   private setLimitLabel() {

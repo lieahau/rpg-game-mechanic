@@ -4,7 +4,7 @@ export enum EquipmentType {
   BOOTS = 'boots',
 }
 
-export enum ItemType {
-  EQUIPMENT = 'equipment',
-  CONSUMABLE = 'consumable',
+export enum ConsumableType {
+  HP_POTION = 'hp_potion',
+  MP_POTION = 'mp_potion',
 }

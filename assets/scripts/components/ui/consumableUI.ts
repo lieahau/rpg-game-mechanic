@@ -28,6 +28,12 @@ export class ConsumableUI extends BaseItemUI {
     }
   }
 
+  updateQuantity() {
+    if (this.quantityLabel) {
+      this.quantityLabel.string = this.data.getQuantity().toString();
+    }
+  }
+
   protected getTooltipContent(): string {
     return `${this.data.item.name}\n\nEffect: ${JSON.stringify(this.data.item.stats, null, 2)}`;
   }

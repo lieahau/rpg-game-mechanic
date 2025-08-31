@@ -1,4 +1,4 @@
-import { EquipmentType } from './enums';
+import { ConsumableType, EquipmentType } from './enums';
 
 export interface IPlayerData {
   stats: Partial<IStats>;
@@ -16,13 +16,16 @@ export interface IStats {
   intelligence: number;
 }
 
-export interface IEquipment {
+export interface IItem {
   id: number;
   name: string;
   desc: string;
-  slot: EquipmentType;
   stats: Partial<IStats>;
   iconUrl: string;
+}
+
+export interface IEquipment extends IItem {
+  slot: EquipmentType;
 }
 
 export interface IEquipmentItem {
@@ -38,12 +41,8 @@ export type IEquipmentSlots = {
   [key in EquipmentType]?: IEquipmentItem;
 };
 
-export interface IConsumable {
-  id: number;
-  name: string;
-  desc: string;
-  stats: Partial<IStats>;
-  iconUrl: string;
+export interface IConsumable extends IItem {
+  type: ConsumableType;
 }
 
 export interface IConsumableItem {

@@ -1,6 +1,6 @@
 import { _decorator, Button, Component, EventTarget, Label, Node } from 'cc';
 import { ItemDetailsType } from '../../types/enums';
-import { PlayerGameEvents } from '../../types/gameEvents';
+import { InventoryGameEvents, PlayerGameEvents } from '../../types/gameEvents';
 import { Item } from '../../models/item';
 import { Equipment } from '../../models/equipment';
 const { ccclass, property } = _decorator;
@@ -26,17 +26,25 @@ export class ItemDetailsUI extends Component {
 
   private playerEventTarget: EventTarget;
 
+  private inventoryEventTarget: EventTarget;
+
   private item: Item;
 
   onLoad() {
-    if (this.view) this.view.active = false;
-    this.closeButton?.node.on(Button.EventType.CLICK, this.onClickClose, this);
+    if (this.view) this.hide();
+    this.closeButton?.node.on(Button.EventType.CLICK, this.hide, this);
     this.useButton?.node.on(Button.EventType.CLICK, this.onClickUse, this);
   }
 
   onDestroy() {
-    this.closeButton?.node.off(Button.EventType.CLICK, this.onClickClose, this);
+    this.closeButton?.node.off(Button.EventType.CLICK, this.hide, this);
     this.useButton?.node.off(Button.EventType.CLICK, this.onClickUse, this);
+  }
+
+  setInventoryEventTarget(eventTarget: EventTarget) {
+    this.setInventoryEventListenersOff();
+    this.inventoryEventTarget = eventTarget;
+    this.setInventoryEventListenersOn();
   }
 
   setPlayerEventTarget(eventTarget: EventTarget) {
@@ -61,6 +69,22 @@ export class ItemDetailsUI extends Component {
     );
   }
 
+  private setInventoryEventListenersOn() {
+    this.inventoryEventTarget?.on(
+      InventoryGameEvents.INVENTORY_CONSUMABLE_EMPTIED,
+      this.hide,
+      this
+    );
+  }
+
+  private setInventoryEventListenersOff() {
+    this.inventoryEventTarget?.on(
+      InventoryGameEvents.INVENTORY_CONSUMABLE_EMPTIED,
+      this.hide,
+      this
+    );
+  }
+
   show(itemDetailsType: ItemDetailsType, item: Item, content: string = '') {
     if (!this.view) return;
     this.view.active = true;
@@ -77,23 +101,23 @@ export class ItemDetailsUI extends Component {
     }
   }
 
-  private onClickClose() {
+  hide() {
     this.view.active = false;
   }
 
   private onClickUse() {
     switch (this.itemDetailsType) {
       case ItemDetailsType.CAN_EQUIP:
-        this.playerEventTarget.emit(PlayerGameEvents.PLAYER_EQUIPMENT_EQUIPPING, this.item);
+        this.playerEventTarget.emit(PlayerGameEvents.PLAYER_EQUIPPING_EQUIPMENT, this.item);
         break;
       case ItemDetailsType.CAN_UNEQUIP:
         this.playerEventTarget.emit(
-          PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING,
+          PlayerGameEvents.PLAYER_UNEQUIPPING_EQUIPMENT,
           (this.item as Equipment).item.slot
         );
         break;
-
-      default:
+      case ItemDetailsType.CAN_USE:
+        this.playerEventTarget.emit(PlayerGameEvents.PLAYER_USING_CONSUMABLE, this.item);
         break;
     }
   }

@@ -5,6 +5,7 @@ import { Equipment } from '../../models/equipment';
 import { EquipmentType } from '../../models/types/enums';
 import { PlayerGameEvents } from '../../types/gameEvents';
 import { InventorySystem } from '../../models/inventorySystem';
+import { Consumable } from '../../models/consumable';
 
 const { ccclass } = _decorator;
 
@@ -15,20 +16,18 @@ export class Player extends Component {
 
   onLoad() {
     this.eventTarget.on(PlayerGameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
-    this.eventTarget.on(PlayerGameEvents.PLAYER_HEAL, this.heal, this);
     this.eventTarget.on(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
-    this.eventTarget.on(PlayerGameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
-    this.eventTarget.on(PlayerGameEvents.PLAYER_EQUIPMENT_EQUIPPING, this.equip, this);
-    this.eventTarget.on(PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING, this.unequip, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_EQUIPPING_EQUIPMENT, this.equip, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_UNEQUIPPING_EQUIPMENT, this.unequip, this);
+    this.eventTarget.on(PlayerGameEvents.PLAYER_USING_CONSUMABLE, this.useConsumable, this);
   }
 
   onDestroy() {
     this.eventTarget.off(PlayerGameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
-    this.eventTarget.off(PlayerGameEvents.PLAYER_HEAL, this.heal, this);
     this.eventTarget.off(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
-    this.eventTarget.off(PlayerGameEvents.PLAYER_RESTORE_MANA, this.restoreMana, this);
-    this.eventTarget.off(PlayerGameEvents.PLAYER_EQUIPMENT_EQUIPPING, this.equip, this);
-    this.eventTarget.off(PlayerGameEvents.PLAYER_EQUIPMENT_UNEQUIPPING, this.unequip, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_EQUIPPING_EQUIPMENT, this.equip, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_UNEQUIPPING_EQUIPMENT, this.unequip, this);
+    this.eventTarget.off(PlayerGameEvents.PLAYER_USING_CONSUMABLE, this.useConsumable, this);
   }
 
   init(data: IPlayerData) {
@@ -57,23 +56,15 @@ export class Player extends Component {
   }
 
   takeDamage(amount: number) {
-    this.controller.takeDamage(amount);
-    this.notifyStatsChanged();
-  }
-
-  heal(amount: number) {
-    this.controller.heal(amount);
-    this.notifyStatsChanged();
+    const succeed = this.controller.takeDamage(amount);
+    if (succeed) this.notifyStatsChanged();
+    return succeed;
   }
 
   useMana(amount: number) {
-    this.controller.useMana(amount);
-    this.notifyStatsChanged();
-  }
-
-  restoreMana(amount: number) {
-    this.controller.restoreMana(amount);
-    this.notifyStatsChanged();
+    const succeed = this.controller.useMana(amount);
+    if (succeed) this.notifyStatsChanged();
+    return succeed;
   }
 
   equip(equipment: Equipment) {
@@ -92,6 +83,15 @@ export class Player extends Component {
     }
   }
 
+  useConsumable(item: Consumable) {
+    const succeed = this.controller.useConsumable(item);
+
+    if (succeed) {
+      this.notifyStatsChanged();
+      this.notifyConsumableUsed(item);
+    }
+  }
+
   private notifyStatsChanged() {
     this.eventTarget.emit(PlayerGameEvents.PLAYER_STATS_CHANGED, this.controller.getStats());
   }
@@ -102,5 +102,9 @@ export class Player extends Component {
       this.controller.getAllEquipped(),
       ...args
     );
+  }
+
+  private notifyConsumableUsed(item: Consumable) {
+    this.eventTarget.emit(PlayerGameEvents.PLAYER_CONSUMABLE_USED, item);
   }
 }
