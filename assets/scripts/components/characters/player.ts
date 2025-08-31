@@ -4,14 +4,14 @@ import { PlayerController } from '../../controllers/playerController';
 import { Equipment } from '../../models/equipment';
 import { EquipmentType } from '../../models/types/enums';
 import { PlayerGameEvents } from '../../types/gameEvents';
-import { Item } from '../../models/item';
+import { InventorySystem } from '../../models/inventorySystem';
 
 const { ccclass } = _decorator;
 
 @ccclass('Player')
 export class Player extends Component {
   private controller: PlayerController;
-  private eventTarget: EventTarget = new EventTarget();
+  private eventTarget: EventTarget = new EventTarget(); // A simple, built-in Observer Pattern
 
   onLoad() {
     this.eventTarget.on(PlayerGameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
@@ -52,16 +52,8 @@ export class Player extends Component {
     return this.controller.getAllEquipped();
   }
 
-  getInventorySystem() {
+  getInventorySystem(): InventorySystem {
     return this.controller.getInventorySystem();
-  }
-
-  getInventoryItems(): Item[] {
-    return this.controller.getInventoryItems();
-  }
-
-  getInventoryMaxSlotsAmount(): number {
-    return this.controller.getInventoryMaxSlotsAmount();
   }
 
   takeDamage(amount: number) {
