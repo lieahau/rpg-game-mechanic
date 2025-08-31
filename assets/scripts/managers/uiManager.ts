@@ -10,7 +10,6 @@ import { ItemDetailsUI } from '../components/ui/itemDetailsUI';
 import { Item } from '../models/item';
 import { ItemDetailsType } from '../types/enums';
 import { Equipment } from '../models/equipment';
-import { Consumable } from '../models/consumable';
 const { ccclass, property } = _decorator;
 
 @ccclass('UIManager')
@@ -64,20 +63,18 @@ export class UIManager extends Component {
   private onShowItemDetails(item: Item, itemDetails: string) {
     if (!this.player) return;
 
+    let itemDetailsType = ItemDetailsType.CAN_USE;
+
     if (item instanceof Equipment) {
       const equippedEquipments = Array.from(this.player.getEquippedEquipments()).map(
         ([_, eq]) => eq
       );
 
       const isEquipped = equippedEquipments.some((eq) => item.isSame(eq));
-
-      if (isEquipped) {
-        this.itemDetailsUI.show(ItemDetailsType.CAN_UNEQUIP, item, itemDetails);
-      } else {
-        this.itemDetailsUI.show(ItemDetailsType.CAN_EQUIP, item, itemDetails);
-      }
-    } else if (item instanceof Consumable) {
-      // TODO show consumable details
+      if (isEquipped) itemDetailsType = ItemDetailsType.CAN_UNEQUIP;
+      else itemDetailsType = ItemDetailsType.CAN_EQUIP;
     }
+
+    this.itemDetailsUI.show(itemDetailsType, item, itemDetails);
   }
 }
