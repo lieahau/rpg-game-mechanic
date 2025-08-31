@@ -1,11 +1,13 @@
 import { _decorator, Component, EventTarget, Label, Node } from 'cc';
 import { PlayerGameEvents } from '../../types/gameEvents';
-import { EquipmentType, ItemType } from '../../models/types/enums';
+import { EquipmentType } from '../../models/types/enums';
 import { Equipment } from '../../models/equipment';
 import { InventorySlotsUIFactory } from '../../factories/inventorySlotsUIFactory';
 import { EquipmentUIFactory } from '../../factories/equipmentUIFactory';
 import { InventorySlotUI } from './inventorySlotUI';
 import { InventorySystem } from '../../models/inventorySystem';
+import { Consumable } from '../../models/consumable';
+import { ConsumableUIFactory } from '../../factories/consumableUIFactory';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryUI')
@@ -73,17 +75,17 @@ export class InventoryUI extends Component {
       const items = this.inventorySystem.getItems();
       const equipments = Array.from(equippedEquipments.values());
       for (let i = 0; i < items.length; i++) {
-        if (items[i].getType() === ItemType.EQUIPMENT) {
-          const item = items[i] as Equipment;
+        const item = items[i];
+        if (item instanceof Equipment) {
           const content = await EquipmentUIFactory.instance.create(item);
-
           this.slots[i].setContent(content);
 
           // set overlay to diferentiate the equipped equipments
           const isEquipped = equipments.some((eq) => item.isSame(eq));
           this.slots[i].setOverlay(isEquipped);
-        } else {
-          // TODO spawn consumable
+        } else if (item instanceof Consumable) {
+          const content = await ConsumableUIFactory.instance.create(item);
+          this.slots[i].setContent(content);
         }
       }
     } catch (error) {

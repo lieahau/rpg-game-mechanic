@@ -1,11 +1,14 @@
-import { _decorator, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Label, Sprite, SpriteFrame } from 'cc';
 import { BaseItemUI } from './baseItemUI';
 import { Consumable } from '../../models/consumable';
-const { ccclass } = _decorator;
+const { ccclass, property } = _decorator;
 
 @ccclass('ConsumableUI')
 export class ConsumableUI extends BaseItemUI {
   protected data: Consumable;
+
+  @property(Label)
+  private quantityLabel?: Label;
 
   getData() {
     return this.data;
@@ -13,6 +16,9 @@ export class ConsumableUI extends BaseItemUI {
 
   setData(data: Consumable) {
     this.data = data;
+    if (this.quantityLabel) {
+      this.quantityLabel.string = data.getQuantity().toString();
+    }
   }
 
   setSpriteFrame(spriteFrame: SpriteFrame) {
@@ -27,6 +33,6 @@ export class ConsumableUI extends BaseItemUI {
   }
 
   protected getDetailContent(): string {
-    return `ID: ${this.data.item.id}\n\n${this.data.item.name}\nQuantity: ${this.data.quantity}\n\n${this.data.item.desc}\n\nEffect: ${JSON.stringify(this.data.item.stats, null, 2)}`;
+    return `ID: ${this.data.item.id}\n\n${this.data.item.name}\n\n${this.data.item.desc}\n\nEffect: ${JSON.stringify(this.data.item.stats, null, 2)}`;
   }
 }
