@@ -26,8 +26,7 @@ export interface IEquipment {
 }
 
 export interface IEquipmentItem {
-  // instanceId is used to differentiate multiple same IEquipment "id", but have other fields with various value
-  // (e.g., a player has two iron helmets, one has 100 durability and the other one has 20 durability)
+  // instanceId is used to differentiate multiple same IEquipment "id"
   instanceId: number;
 
   item: IEquipment;
@@ -55,8 +54,4 @@ export interface IConsumableItem {
 export interface IInventory {
   maxSlots: number;
   items: (IEquipmentItem | IConsumableItem)[];
-}
-
-export function IsInventoryIEquipmentItem(item): item is IEquipmentItem {
-  return !!(item as IEquipmentItem)?.instanceId;
 }
