@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTarget, Node } from 'cc';
+import { _decorator, Component, EventTarget, Node, tween, UIOpacity } from 'cc';
 import { PlayerGameEvents } from '../../types/gameEvents';
 import { EquipmentType } from '../../models/types/enums';
 import { Equipment } from '../../models/equipment';
@@ -10,6 +10,9 @@ const { ccclass, property } = _decorator;
 class EquipmentSlotUI {
   @property(Node)
   slot?: Node;
+
+  @property(UIOpacity)
+  vfxOpacity?: UIOpacity;
 
   ui?: EquipmentUI;
 }
@@ -84,9 +87,22 @@ export class EquipmentSlotsUI extends Component {
         }
 
         if (!slotNode) continue;
+        if (!equipment && !currentUIRef) continue;
 
         // Check if existing UI already matches this equipment
         if (equipment?.isSame(currentUIRef?.getData())) continue;
+
+        switch (type) {
+          case EquipmentType.HELMET:
+            this.playVFX(this.helmet.vfxOpacity);
+            break;
+          case EquipmentType.ARMOR:
+            this.playVFX(this.armor.vfxOpacity);
+            break;
+          case EquipmentType.BOOTS:
+            this.playVFX(this.boots.vfxOpacity);
+            break;
+        }
 
         slotNode.removeAllChildren();
 
@@ -112,5 +128,14 @@ export class EquipmentSlotsUI extends Component {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  private playVFX(uiOpacity: UIOpacity) {
+    if (!uiOpacity) return;
+
+    tween(uiOpacity)
+      .to(0.1, { opacity: 255 }, { easing: 'fade' })
+      .to(0.1, { opacity: 0 }, { easing: 'fade' })
+      .start();
   }
 }

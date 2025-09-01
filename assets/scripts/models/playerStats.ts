@@ -38,7 +38,7 @@ export class PlayerStats {
   }
 
   takeDamage(amount: number) {
-    if (amount <= 0) return false;
+    if (amount <= 0 || this.baseStats.health <= 0) return false;
 
     this.baseStats.health = Math.max(this.baseStats.health - amount, 0);
     return true;
@@ -56,7 +56,7 @@ export class PlayerStats {
   }
 
   useMana(amount: number) {
-    if (amount <= 0) return false;
+    if (amount <= 0 || this.baseStats.mana <= 0) return false;
 
     this.baseStats.mana = Math.max(this.baseStats.mana - amount, 0);
     return true;

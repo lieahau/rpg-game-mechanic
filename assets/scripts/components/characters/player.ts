@@ -1,20 +1,23 @@
-import { _decorator, Component, EventTarget } from 'cc';
+import { _decorator, Color, Component, EventTarget, Sprite, tween } from 'cc';
 import { IPlayerData, IStats } from '../../models/types/interfaces';
 import { PlayerController } from '../../controllers/playerController';
 import { Equipment } from '../../models/equipment';
-import { EquipmentType } from '../../models/types/enums';
+import { ConsumableType, EquipmentType } from '../../models/types/enums';
 import { PlayerGameEvents } from '../../types/gameEvents';
 import { InventorySystem } from '../../models/inventorySystem';
 import { Consumable } from '../../models/consumable';
-
 const { ccclass } = _decorator;
 
 @ccclass('Player')
 export class Player extends Component {
+  private sprite: Sprite;
+
   private controller: PlayerController;
   private eventTarget: EventTarget = new EventTarget(); // A simple, built-in Observer Pattern
 
   onLoad() {
+    this.sprite = this.getComponent(Sprite);
+
     this.eventTarget.on(PlayerGameEvents.PLAYER_TAKE_DAMAGE, this.takeDamage, this);
     this.eventTarget.on(PlayerGameEvents.PLAYER_USE_MANA, this.useMana, this);
     this.eventTarget.on(PlayerGameEvents.PLAYER_EQUIPPING_EQUIPMENT, this.equip, this);
@@ -57,13 +60,19 @@ export class Player extends Component {
 
   takeDamage(amount: number) {
     const succeed = this.controller.takeDamage(amount);
-    if (succeed) this.notifyStatsChanged();
+    if (succeed) {
+      this.notifyStatsChanged();
+      this.playVFX(Color.RED);
+    }
     return succeed;
   }
 
   useMana(amount: number) {
     const succeed = this.controller.useMana(amount);
-    if (succeed) this.notifyStatsChanged();
+    if (succeed) {
+      this.notifyStatsChanged();
+      this.playVFX(Color.BLUE);
+    }
     return succeed;
   }
 
@@ -89,6 +98,9 @@ export class Player extends Component {
     if (succeed) {
       this.notifyStatsChanged();
       this.notifyConsumableUsed(item);
+
+      if (item.item.type === ConsumableType.HP_POTION) this.playVFX(Color.GREEN);
+      if (item.item.type === ConsumableType.MP_POTION) this.playVFX(Color.CYAN);
     }
   }
 
@@ -106,5 +118,14 @@ export class Player extends Component {
 
   private notifyConsumableUsed(item: Consumable) {
     this.eventTarget.emit(PlayerGameEvents.PLAYER_CONSUMABLE_USED, item);
+  }
+
+  private playVFX(color: Color) {
+    if (!this.sprite) return;
+
+    tween(this.sprite)
+      .to(0.1, { color: color }, { easing: 'fade' })
+      .to(0.1, { color: Color.WHITE }, { easing: 'fade' })
+      .start();
   }
 }
