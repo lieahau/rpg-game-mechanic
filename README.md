@@ -24,7 +24,7 @@ A lightweight RPG system built with **Cocos Creator 3.8.6**, featuring character
 - **SOLID principles** applied for clean and extensible code.
 - **Observer Pattern** implemented with Cocos’ built-in `EventTarget` for component communication.
 - Supports **resource-driven data loading** for flexible updates.
-- **Unit tests** with **Jest** for core gameplay features.
+- **Unit tests** with **Jest** for core gameplay logic features.
 
 ## Setup
 
