@@ -5,7 +5,7 @@
   "platform": "web-mobile",
   "buildPath": "project://build",
   "debug": false,
-  "buildMode": "normal",
+  "buildMode": "bundle",
   "mangleProperties": false,
   "md5Cache": true,
   "skipCompressTexture": false,
