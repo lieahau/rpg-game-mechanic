@@ -72,10 +72,12 @@ export class InventorySystem {
     const owned = this.getConsumableItem(item.item.id);
     if (owned.length === 0) return;
 
+    // prioritize reducing quantity from the least stack amount first
     owned.sort((a, b) => (a.getQuantity() < b.getQuantity() ? -1 : 1));
     owned[0].removeQuantity(1);
 
-    if (owned[0].getQuantity() <= 0) this.removeItem(item);
+    // if the quantity reached 0, remove it from the inventory slot
+    if (owned[0].getQuantity() <= 0) this.removeItem(owned[0]);
   }
 
   private addConsumableItem(item: Consumable): boolean {
