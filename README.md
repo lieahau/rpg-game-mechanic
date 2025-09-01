@@ -2,6 +2,8 @@
 
 A lightweight RPG system built with **Cocos Creator 3.8.6**, featuring character stats, an inventory system, equipment management, and consumable items with interactive UI feedback.
 
+![Display](screenshot_view.png)
+
 ## Features
 
 - **Character Stats**: Health, Mana, Strength, Agility, Intelligence.
