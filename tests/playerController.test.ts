@@ -46,6 +46,28 @@ describe('PlayerController', () => {
       playerCtrl.restoreMana(1000);
       expect(playerCtrl.getStats().mana).toBe(playerCtrl.getStats().maxMana);
     });
+
+    test('should use MP potion, restore mana, and reduce quantity', () => {
+      playerCtrl.useMana(60); // reduce MP
+      const MPPotionID = 8;
+      const potion = playerCtrl.getInventorySystem().getConsumableItem(MPPotionID)[0];
+
+      const succeed = playerCtrl.useConsumable(potion);
+      const stats = playerCtrl.getStats();
+
+      expect(succeed).toBe(true);
+      expect(stats.mana).toBe(20); // 75 - 60 + 5
+      expect(potion.getQuantity()).toBe(2);
+    });
+
+    test('should not consume MP potion when at full mana', () => {
+      const MPPotionID = 8;
+      const potion = playerCtrl.getInventorySystem().getConsumableItem(MPPotionID)[0];
+
+      const succeed = playerCtrl.useConsumable(potion);
+      expect(succeed).toBe(false);
+      expect(potion.getQuantity()).toBe(3); // unchanged
+    });
   });
 
   describe('Equipment management', () => {
