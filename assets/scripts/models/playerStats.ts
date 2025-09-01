@@ -17,6 +17,10 @@ export class PlayerStats {
     this.modifiers = this.modifiers.filter((m) => m !== modifier);
   }
 
+  getBaseStats(): IStats {
+    return this.baseStats.clone();
+  }
+
   getStats(): IStats {
     // base stats + all modifiers applied
     return this.modifiers.reduce((accumulator: IStats, modifier) => {

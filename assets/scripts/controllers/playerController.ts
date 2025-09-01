@@ -22,6 +22,10 @@ export class PlayerController {
     equipments.forEach((equipment) => this.equip(equipment));
   }
 
+  getBaseStats() {
+    return this.stats.getBaseStats();
+  }
+
   getStats() {
     return this.stats.getStats();
   }
