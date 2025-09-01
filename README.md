@@ -3,6 +3,7 @@
 A lightweight RPG system built with **Cocos Creator 3.8.6**, featuring character stats, an inventory system, equipment management, and consumable items with interactive UI feedback.
 
 ## Features
+
 - **Character Stats**: Health, Mana, Strength, Agility, Intelligence.
 - **Equipment System**: Helmet, Armour, Boots (boosts character stats when equipped).
 - **Inventory Management**: Add, stack, equip, and consume items.
@@ -15,18 +16,21 @@ A lightweight RPG system built with **Cocos Creator 3.8.6**, featuring character
 - **Responsive Layout**: Supports multiple landscape screen sizes and aspect ratios.
 
 ## Tech Highlights
+
 - Built as a **Web Mobile game**.
 - Uses **prefabs** for reusable UI and gameplay elements.
 - **SOLID principles** applied for clean and extensible code.
 - **Observer Pattern** implemented with Cocos’ built-in `EventTarget` for component communication.
 - Supports **resource-driven data loading** for flexible updates.
-- Simple, extensible code structure with **unit tests** for core features by using **Jest**.
+- **Unit tests** with **Jest** for core gameplay features.
 
 ## Setup
+
 1. run `npm i` in the terminal
 2. Open the project in **Cocos Creator 3.8.6**.
 3. Build and run on **Web Mobile** platform (can import build config file at `configs/buildConfig_web-mobile.json`).
 4. Use the provided UI to interact with the character, inventory, and equipment.
 
 ## Unit test
+
 1. run `npm run test` in the terminal.
