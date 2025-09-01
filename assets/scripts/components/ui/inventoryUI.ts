@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTarget, Label, Node } from 'cc';
+import { _decorator, Color, Component, EventTarget, Label, Node } from 'cc';
 import { InventoryGameEvents, PlayerGameEvents } from '../../types/gameEvents';
 import { EquipmentType } from '../../models/types/enums';
 import { Equipment } from '../../models/equipment';
@@ -103,8 +103,10 @@ export class InventoryUI extends Component {
 
   private async initEmptySlots() {
     try {
+      const maxSlots = this.inventorySystem.getMaxSlots();
+      const itemsAmount = this.inventorySystem.getFilledSlotsAmount();
       this.slots = await InventorySlotsUIFactory.instance.createBulk(
-        this.inventorySystem.getMaxSlots(),
+        Math.max(maxSlots, itemsAmount),
         this.grid
       );
     } catch (error) {
@@ -173,6 +175,9 @@ export class InventoryUI extends Component {
       const filledSlots = this.inventorySystem.getFilledSlotsAmount();
       const maxSlots = this.getMaxSlots();
       this.limitLabel.string = `${filledSlots}/${maxSlots}`;
+
+      if (filledSlots > maxSlots) this.limitLabel.color = Color.RED;
+      else this.limitLabel.color = Color.WHITE;
     }
   }
 }
