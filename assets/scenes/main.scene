@@ -5004,7 +5004,7 @@
         "__id__": 139
       },
       {
-        "__id__": 141
+        "__id__": 140
       }
     ],
     "_prefab": null,
@@ -5231,6 +5231,19 @@
     "_id": "48xQUjT4tH2InuwzOaKwIJ"
   },
   {
+    "__type__": "50b3c18V+pPSpTN+YkrS1sY",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 133
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "damageAmount": 14,
+    "_id": "88vdsJ9t5NTrkfOgyftC9a"
+  },
+  {
     "__type__": "cc.Button",
     "_name": "",
     "_objFlags": 0,
@@ -5242,7 +5255,7 @@
     "__prefab": null,
     "clickEvents": [
       {
-        "__id__": 140
+        "__id__": 141
       }
     ],
     "_interactable": true,
@@ -5309,19 +5322,6 @@
     "customEventData": ""
   },
   {
-    "__type__": "50b3c18V+pPSpTN+YkrS1sY",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 133
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "damageAmount": 5,
-    "_id": "88vdsJ9t5NTrkfOgyftC9a"
-  },
-  {
     "__type__": "cc.Node",
     "_name": "Spell Button",
     "_objFlags": 0,
@@ -5346,7 +5346,7 @@
         "__id__": 148
       },
       {
-        "__id__": 150
+        "__id__": 149
       }
     ],
     "_prefab": null,
@@ -5573,6 +5573,19 @@
     "_id": "9aaG1HsddKqK/KZemv+20n"
   },
   {
+    "__type__": "26e9cmEYJlMlKhWtbCN0ZvL",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 142
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "manaAmount": 7,
+    "_id": "6eS4yz/bhJpY95p/XRhdwd"
+  },
+  {
     "__type__": "cc.Button",
     "_name": "",
     "_objFlags": 0,
@@ -5584,7 +5597,7 @@
     "__prefab": null,
     "clickEvents": [
       {
-        "__id__": 149
+        "__id__": 150
       }
     ],
     "_interactable": true,
@@ -5649,19 +5662,6 @@
     "_componentId": "26e9cmEYJlMlKhWtbCN0ZvL",
     "handler": "onClick",
     "customEventData": ""
-  },
-  {
-    "__type__": "26e9cmEYJlMlKhWtbCN0ZvL",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 142
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "manaAmount": 1,
-    "_id": "6eS4yz/bhJpY95p/XRhdwd"
   },
   {
     "__type__": "cc.UITransform",
@@ -7740,10 +7740,10 @@
       "__id__": 180
     },
     "damageButton": {
-      "__id__": 141
+      "__id__": 139
     },
     "spellButton": {
-      "__id__": 150
+      "__id__": 148
     },
     "_id": "5ejjmD4E5Hw5q++ob6y6Gf"
   },
