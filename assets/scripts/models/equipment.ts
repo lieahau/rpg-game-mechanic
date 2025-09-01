@@ -1,5 +1,4 @@
 import { Item } from './item';
-import { ItemType } from './types/enums';
 import { IEquipment, IEquipmentItem } from './types/interfaces';
 
 export class Equipment extends Item implements IEquipmentItem {
@@ -14,10 +13,6 @@ export class Equipment extends Item implements IEquipmentItem {
     this.item = data.item;
     this.durability = data.durability;
     this.maxDurability = data.maxDurability;
-  }
-
-  getType(): ItemType {
-    return ItemType.EQUIPMENT;
   }
 
   isSame(comparisonEquipment?: Equipment): boolean {
